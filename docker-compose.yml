@@ -1,0 +1,54 @@
+services:
+
+  mysql:
+    image: mysql:8.0
+    container_name: fithub_mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: fithub
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: fithub
+      MYSQL_PASSWORD: fithub
+    ports:
+      - "3307:3308"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - fithub_network
+
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    container_name: fithub_backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/var/www
+    depends_on:
+      - mysql
+    networks:
+      - fithub_network
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    container_name: fithub_frontend
+    restart: unless-stopped
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    depends_on:
+      - backend
+    networks:
+      - fithub_network
+
+volumes:
+  mysql_data:
+
+networks:
+  fithub_network:
