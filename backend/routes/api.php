@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\CoachAvailabilityController;
 
+use App\Http\Controllers\Api\SubscriptionPlanController;
+use App\Http\Controllers\Api\SubscriptionController;
+
 
 
 Route::prefix('auth')->group(function () {
@@ -50,4 +53,16 @@ Route::middleware(['auth:sanctum', 'check.role:coach'])->group(function () {
 
     Route::delete('/coach/availabilities/{id}', [CoachAvailabilityController::class, 'destroy']);
 
+});
+
+
+Route::get('/subscription-plans', [SubscriptionPlanController::class, 'index']);
+
+Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
+    Route::post('/subscription-plans', [SubscriptionPlanController::class, 'store']);
+});
+
+Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
+    Route::post('/subscriptions', [SubscriptionController::class, 'subscribe']);
+    Route::get('/my-subscription', [SubscriptionController::class, 'mySubscription']);
 });
