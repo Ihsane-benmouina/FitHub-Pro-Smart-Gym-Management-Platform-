@@ -18,3 +18,9 @@ Route::prefix('auth')->group(function () {
     });
 
 });
+
+Route::middleware(['auth:sanctum', 'check.role:admin'])->get('/admin/test', function () {
+    return response()->json([
+        'message' => 'Bienvenue Admin'
+    ]);
+});
