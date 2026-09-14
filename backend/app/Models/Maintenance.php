@@ -3,6 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+    'equipment_id',
+    'reported_by',
+    'description',
+    'type',
+    'status',
+    'scheduled_date',
+    'completed_date',
+    'cost',
+])]
 
 class Maintenance extends Model
 {
