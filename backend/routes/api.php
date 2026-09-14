@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PasswordResetController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\CoachAvailabilityController;
 
 
 
@@ -38,5 +39,15 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/profile', [ProfileController::class, 'show']);
 
     Route::put('/profile', [ProfileController::class, 'update']);
+
+});
+
+Route::middleware(['auth:sanctum', 'check.role:coach'])->group(function () {
+
+    Route::get('/coach/availabilities', [CoachAvailabilityController::class, 'index']);
+
+    Route::post('/coach/availabilities', [CoachAvailabilityController::class, 'store']);
+
+    Route::delete('/coach/availabilities/{id}', [CoachAvailabilityController::class, 'destroy']);
 
 });
