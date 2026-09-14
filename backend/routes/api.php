@@ -10,6 +10,8 @@ use App\Http\Controllers\Api\SubscriptionPlanController;
 use App\Http\Controllers\Api\SubscriptionController;
 use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReservationController;
+use App\Http\Controllers\Api\ExerciseController;
+use App\Http\Controllers\Api\ProgramController;
 
 
 Route::prefix('auth')->group(function () {
@@ -89,4 +91,23 @@ Route::middleware(['auth:sanctum', 'check.role:coach'])->group(function () {
     Route::get('/coach/reservations', [ReservationController::class, 'coachReservations']);
     Route::put('/reservations/{id}/accept', [ReservationController::class, 'accept']);
     Route::put('/reservations/{id}/reject', [ReservationController::class, 'reject']);
+});
+
+
+Route::middleware(['auth:sanctum', 'check.role:coach'])->group(function () {
+
+    Route::get('/exercises', [ExerciseController::class, 'index']);
+    Route::post('/exercises', [ExerciseController::class, 'store']);
+
+    Route::post('/programs', [ProgramController::class, 'store']);
+    Route::get('/coach/programs', [ProgramController::class, 'coachPrograms']);
+    Route::put('/programs/{id}', [ProgramController::class, 'update']);
+
+    Route::post('/programs/{id}/exercises', [ProgramController::class, 'addExercise']);
+});
+
+Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
+
+    Route::get('/my-programs', [ProgramController::class, 'myPrograms']);
+
 });

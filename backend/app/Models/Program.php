@@ -3,6 +3,19 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+      'coach_id',
+    'member_id',
+    'title',
+    'description',
+    'goal',
+    'start_date',
+    'end_date',
+    'status',
+
+])]
 
 class Program extends Model
 {
