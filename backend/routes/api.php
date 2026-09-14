@@ -2,6 +2,8 @@
 
 use App\Http\Controllers\Api\AuthController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\PasswordResetController;
+
 
 Route::prefix('auth')->group(function () {
 
@@ -24,3 +26,6 @@ Route::middleware(['auth:sanctum', 'check.role:admin'])->get('/admin/test', func
         'message' => 'Bienvenue Admin'
     ]);
 });
+
+Route::post('/auth/forgot-password', [PasswordResetController::class, 'forgotPassword']);
+Route::post('/auth/reset-password', [PasswordResetController::class, 'resetPassword']);
