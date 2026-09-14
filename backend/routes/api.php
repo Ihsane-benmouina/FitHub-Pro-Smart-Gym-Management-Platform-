@@ -12,6 +12,7 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\ProgramController;
+use App\Http\Controllers\Api\AttendanceController;
 
 
 Route::prefix('auth')->group(function () {
@@ -111,3 +112,17 @@ Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
     Route::get('/my-programs', [ProgramController::class, 'myPrograms']);
 
 });
+
+Route::middleware(['auth:sanctum', 'check.role:receptionniste,admin'])->group(function () {
+
+    Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn']);
+
+    Route::post('/attendance/check-out', [AttendanceController::class, 'checkOut']);
+
+});
+
+Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
+
+    Route::get('/my-attendances', [AttendanceController::class, 'myHistory']);
+
+}); 
