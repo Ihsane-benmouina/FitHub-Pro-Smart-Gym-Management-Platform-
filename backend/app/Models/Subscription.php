@@ -3,6 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+     'member_id',
+    'subscription_plan_id',
+    'start_date',
+    'end_date',
+    'status',
+])]
 
 class Subscription extends Model
 {
