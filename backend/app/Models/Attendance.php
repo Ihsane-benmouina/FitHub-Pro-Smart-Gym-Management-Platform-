@@ -3,6 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+    'member_id',
+    'checked_in_by',
+    'check_in_at',
+    'check_out_at',
+    'method',
+])]
 
 class Attendance extends Model
 {
