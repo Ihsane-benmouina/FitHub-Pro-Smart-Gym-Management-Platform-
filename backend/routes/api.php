@@ -15,7 +15,8 @@ use App\Http\Controllers\Api\ProgramController;
 use App\Http\Controllers\Api\EquipmentController;
 use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\AttendanceController;
-
+use App\Http\Controllers\Api\AdminDashboardController;
+use App\Http\Controllers\Api\AdminUserController;
 
 Route::prefix('auth')->group(function () {
 
@@ -137,3 +138,20 @@ Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
     Route::get('/my-attendances', [AttendanceController::class, 'myHistory']);
 
 }); 
+Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
+
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+
+});
+
+Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
+
+    Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
+
+    Route::get('/admin/users', [AdminUserController::class, 'index']);
+
+    Route::put('/admin/users/{id}/role', [AdminUserController::class, 'updateRole']);
+
+    Route::put('/admin/users/{id}/status', [AdminUserController::class, 'toggleStatus']);
+
+});
