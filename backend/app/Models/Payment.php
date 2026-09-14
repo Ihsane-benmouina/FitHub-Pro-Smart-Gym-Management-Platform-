@@ -3,6 +3,17 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+      'subscription_id',
+    'received_by',
+    'amount',
+    'payment_method',
+    'status',
+    'paid_at',
+    'reference',
+])]
 
 class Payment extends Model
 {

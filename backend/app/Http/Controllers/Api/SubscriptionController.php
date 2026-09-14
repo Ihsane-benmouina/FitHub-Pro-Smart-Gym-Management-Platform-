@@ -42,4 +42,29 @@ class SubscriptionController extends Controller
             'subscription' => $subscription
         ]);
     }
+    public function renew(Request $request, $id)
+{
+    $subscription = Subscription::where('id', $id)
+        ->where('member_id', $request->user()->id)
+        ->first();
+
+    if (!$subscription) {
+        return response()->json([
+            'message' => 'Abonnement introuvable'
+        ], 404);
+    }
+
+    $plan = SubscriptionPlan::find($subscription->subscription_plan_id);
+
+    $subscription->update([
+        'start_date' => now()->toDateString(),
+        'end_date' => now()->addDays($plan->duration_days)->toDateString(),
+        'status' => 'active',
+    ]);
+
+    return response()->json([
+        'message' => 'Abonnement renouvelé avec succès',
+        'subscription' => $subscription
+    ]);
+}
 }
