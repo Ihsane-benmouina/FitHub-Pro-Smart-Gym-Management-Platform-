@@ -12,6 +12,8 @@ use App\Http\Controllers\Api\PaymentController;
 use App\Http\Controllers\Api\ReservationController;
 use App\Http\Controllers\Api\ExerciseController;
 use App\Http\Controllers\Api\ProgramController;
+use App\Http\Controllers\Api\EquipmentController;
+use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\AttendanceController;
 
 
@@ -66,10 +68,7 @@ Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
     Route::post('/subscription-plans', [SubscriptionPlanController::class, 'store']);
 });
 
-Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
-    Route::post('/subscriptions', [SubscriptionController::class, 'subscribe']);
-    Route::get('/my-subscription', [SubscriptionController::class, 'mySubscription']);
-});
+
 
 Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
     Route::post('/subscriptions', [SubscriptionController::class, 'subscribe']);
@@ -113,6 +112,18 @@ Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
 
 });
 
+Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
+
+    Route::get('/equipment', [EquipmentController::class, 'index']);
+    Route::post('/equipment', [EquipmentController::class, 'store']);
+    Route::put('/equipment/{id}', [EquipmentController::class, 'update']);
+    Route::delete('/equipment/{id}', [EquipmentController::class, 'destroy']);
+
+    Route::get('/maintenances', [MaintenanceController::class, 'index']);
+    Route::post('/maintenances', [MaintenanceController::class, 'store']);
+    Route::put('/maintenances/{id}/complete', [MaintenanceController::class, 'complete']);
+
+});
 Route::middleware(['auth:sanctum', 'check.role:receptionniste,admin'])->group(function () {
 
     Route::post('/attendance/check-in', [AttendanceController::class, 'checkIn']);
