@@ -9,6 +9,8 @@ import ReceptionDashboard from "./pages/reception/ReceptionDashboard";
 import MemberDashboard from "./pages/member/MemberDashboard";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
+import Profile from "./pages/Profile";
+import Availabilities from "./pages/coach/Availabilities";
 
 function App() {
   return (
@@ -52,6 +54,23 @@ function App() {
           element={
             <ProtectedRoute role="adherent">
               <MemberDashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/profile"
+          element={
+            <ProtectedRoute>
+              <Profile />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/coach/availabilities"
+          element={
+            <ProtectedRoute role="coach">
+              <Availabilities />
             </ProtectedRoute>
           }
         />
