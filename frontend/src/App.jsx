@@ -11,6 +11,8 @@ import MemberDashboard from "./pages/member/MemberDashboard";
 import ProtectedRoute from "./routes/ProtectedRoute";
 import Profile from "./pages/Profile";
 import Availabilities from "./pages/coach/Availabilities";
+import Subscriptions from "./pages/member/Subscriptions";
+import Payments from "./pages/member/Payments";
 
 function App() {
   return (
@@ -71,6 +73,24 @@ function App() {
           element={
             <ProtectedRoute role="coach">
               <Availabilities />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/member/subscriptions"
+          element={
+            <ProtectedRoute role="adherent">
+              <Subscriptions />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/member/payments"
+          element={
+            <ProtectedRoute role="adherent">
+              <Payments />
             </ProtectedRoute>
           }
         />
