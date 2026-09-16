@@ -1,101 +1,107 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
 
 function Login() {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [error, setError] = useState("");
-
-  const handleChange = (e) => {
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+    const [form, setForm] = useState({
+        email: "",
+        password: "",
     });
-  };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError("");
+    const [error, setError] = useState("");
 
-    try {
-      const response = await api.post("/auth/login", form);
+    const handleChange = (e) => {
+        setForm({
+            ...form,
+            [e.target.name]: e.target.value,
+        });
+    };
 
-      localStorage.setItem("token", response.data.token);
-      localStorage.setItem("user", JSON.stringify(response.data.user));
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setError("");
 
-      const role = response.data.user.role;
+        try {
+            const response = await api.post("/auth/login", form);
 
-      if (role === "admin") {
-        navigate("/admin");
-      } else if (role === "coach") {
-        navigate("/coach");
-      } else if (role === "receptionniste") {
-        navigate("/reception");
-      } else {
-        navigate("/member");
-      }
-    } catch (error) {
-      setError(
-        error.response?.data?.message || "Erreur de connexion"
-      );
-    }
-  };
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("user", JSON.stringify(response.data.user));
 
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+            const role = response.data.user.role;
 
-        <h1 className="text-3xl font-bold text-center mb-2">
-          FitHub Pro
-        </h1>
+            if (role === "admin") {
+                navigate("/admin");
+            } else if (role === "coach") {
+                navigate("/coach");
+            } else if (role === "receptionniste") {
+                navigate("/reception");
+            } else {
+                navigate("/member");
+            }
+        } catch (error) {
+            setError(
+                error.response?.data?.message || "Erreur de connexion"
+            );
+        }
+    };
 
-        <p className="text-gray-500 text-center mb-6">
-          Connectez-vous à votre espace
-        </p>
+    return (
+        <div className="min-h-screen flex items-center justify-center bg-gray-100">
+            <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
 
-        {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+                <h1 className="text-3xl font-bold text-center mb-2">
+                    FitHub Pro
+                </h1>
 
-        <form onSubmit={handleSubmit}>
+                <p className="text-gray-500 text-center mb-6">
+                    Connectez-vous à votre espace
+                </p>
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            value={form.email}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-4"
-          />
+                {error && (
+                    <div className="bg-red-100 text-red-600 p-3 rounded mb-4">
+                        {error}
+                    </div>
+                )}
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            value={form.password}
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-4"
-          />
+                <form onSubmit={handleSubmit}>
 
-          <button
-            type="submit"
-            className="w-full bg-gray-900 text-white p-3 rounded-lg"
-          >
-            Se connecter
-          </button>
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Email"
+                        value={form.email}
+                        onChange={handleChange}
+                        className="w-full border p-3 rounded-lg mb-4"
+                    />
 
-        </form>
-      </div>
-    </div>
-  );
+                    <input
+                        type="password"
+                        name="password"
+                        placeholder="Mot de passe"
+                        value={form.password}
+                        onChange={handleChange}
+                        className="w-full border p-3 rounded-lg mb-4"
+                    />
+
+                    <button
+                        type="submit"
+                        className="w-full bg-gray-900 text-white p-3 rounded-lg"
+                    >
+                        Se connecter
+                    </button>
+
+                </form>
+                <p className="text-center mt-5 text-gray-500">
+                    Pas encore de compte ?{" "}
+                    <Link to="/register" className="font-semibold text-gray-900">
+                        S'inscrire
+                    </Link>
+                </p>
+            </div>
+        </div>
+    );
 }
 
 export default Login;
