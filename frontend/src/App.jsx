@@ -14,6 +14,9 @@ import Availabilities from "./pages/coach/Availabilities";
 import Subscriptions from "./pages/member/Subscriptions";
 import Payments from "./pages/member/Payments";
 
+import MemberReservations from "./pages/member/Reservations";
+import CoachReservations from "./pages/coach/Reservations";
+
 function App() {
   return (
     <BrowserRouter>
@@ -91,6 +94,25 @@ function App() {
           element={
             <ProtectedRoute role="adherent">
               <Payments />
+            </ProtectedRoute>
+          }
+        />
+
+
+        <Route
+          path="/member/reservations"
+          element={
+            <ProtectedRoute role="adherent">
+              <MemberReservations />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/coach/reservations"
+          element={
+            <ProtectedRoute role="coach">
+              <CoachReservations />
             </ProtectedRoute>
           }
         />
