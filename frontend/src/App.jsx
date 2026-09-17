@@ -26,6 +26,8 @@ import MemberAttendance from "./pages/member/Attendance";
 import MyQrCode from "./pages/member/MyQrCode";
 import Equipment from "./pages/admin/Equipment";
 import Maintenances from "./pages/admin/Maintenances";
+import Users from "./pages/admin/Users";
+import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
 
 function App() {
   return (
@@ -197,6 +199,24 @@ function App() {
           element={
             <ProtectedRoute role="admin">
               <Maintenances />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/users"
+          element={
+            <ProtectedRoute role="admin">
+              <Users />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/subscription-plans"
+          element={
+            <ProtectedRoute role="admin">
+              <SubscriptionPlans />
             </ProtectedRoute>
           }
         />
