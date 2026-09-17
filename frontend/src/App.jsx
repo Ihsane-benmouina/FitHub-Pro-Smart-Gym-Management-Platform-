@@ -17,6 +17,10 @@ import Payments from "./pages/member/Payments";
 import MemberReservations from "./pages/member/Reservations";
 import CoachReservations from "./pages/coach/Reservations";
 
+import Exercises from "./pages/coach/Exercises";
+import CoachPrograms from "./pages/coach/Programs";
+import MemberPrograms from "./pages/member/Programs";
+
 function App() {
   return (
     <BrowserRouter>
@@ -116,6 +120,35 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+
+
+        <Route
+  path="/coach/exercises"
+  element={
+    <ProtectedRoute role="coach">
+      <Exercises />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/coach/programs"
+  element={
+    <ProtectedRoute role="coach">
+      <CoachPrograms />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member/programs"
+  element={
+    <ProtectedRoute role="adherent">
+      <MemberPrograms />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
     </BrowserRouter>
