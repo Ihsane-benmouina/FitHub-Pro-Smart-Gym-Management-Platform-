@@ -21,6 +21,10 @@ import Exercises from "./pages/coach/Exercises";
 import CoachPrograms from "./pages/coach/Programs";
 import MemberPrograms from "./pages/member/Programs";
 
+import ReceptionAttendance from "./pages/reception/Attendance";
+import MemberAttendance from "./pages/member/Attendance";
+import MyQrCode from "./pages/member/MyQrCode";
+
 function App() {
   return (
     <BrowserRouter>
@@ -149,6 +153,33 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/reception/attendance"
+  element={
+    <ProtectedRoute role="receptionniste">
+      <ReceptionAttendance />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member/attendance"
+  element={
+    <ProtectedRoute role="adherent">
+      <MemberAttendance />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member/qr-code"
+  element={
+    <ProtectedRoute role="adherent">
+      <MyQrCode />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
     </BrowserRouter>
