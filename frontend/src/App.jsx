@@ -124,31 +124,31 @@ function App() {
 
 
         <Route
-  path="/coach/exercises"
-  element={
-    <ProtectedRoute role="coach">
-      <Exercises />
-    </ProtectedRoute>
-  }
-/>
+          path="/coach/exercises"
+          element={
+            <ProtectedRoute role="coach">
+              <Exercises />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/coach/programs"
-  element={
-    <ProtectedRoute role="coach">
-      <CoachPrograms />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/coach/programs"
+          element={
+            <ProtectedRoute role="coach">
+              <CoachPrograms />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/member/programs"
-  element={
-    <ProtectedRoute role="adherent">
-      <MemberPrograms />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/member/programs"
+          element={
+            <ProtectedRoute role="adherent">
+              <MemberPrograms />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </BrowserRouter>

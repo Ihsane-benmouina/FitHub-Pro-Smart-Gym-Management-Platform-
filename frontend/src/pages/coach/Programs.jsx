@@ -149,4 +149,27 @@ function Programs() {
   );
 }
 
+const addExercise = async (programId) => {
+  const exerciseId = prompt("Entrez l'ID de l'exercice");
+
+  if (!exerciseId) return;
+
+  try {
+    await api.post(`/programs/${programId}/exercises`, {
+      exercise_id: exerciseId,
+      sets: 3,
+      reps: 10,
+      rest_seconds: 60,
+    });
+
+    setMessage("Exercice ajouté au programme");
+    loadPrograms();
+  } catch (error) {
+    setMessage(
+      error.response?.data?.message ||
+      "Erreur lors de l'ajout de l'exercice"
+    );
+  }
+};
+
 export default Programs;
