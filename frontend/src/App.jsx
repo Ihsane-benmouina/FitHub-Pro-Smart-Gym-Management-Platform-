@@ -24,6 +24,8 @@ import MemberPrograms from "./pages/member/Programs";
 import ReceptionAttendance from "./pages/reception/Attendance";
 import MemberAttendance from "./pages/member/Attendance";
 import MyQrCode from "./pages/member/MyQrCode";
+import Equipment from "./pages/admin/Equipment";
+import Maintenances from "./pages/admin/Maintenances";
 
 function App() {
   return (
@@ -155,31 +157,49 @@ function App() {
         />
 
         <Route
-  path="/reception/attendance"
-  element={
-    <ProtectedRoute role="receptionniste">
-      <ReceptionAttendance />
-    </ProtectedRoute>
-  }
-/>
+          path="/reception/attendance"
+          element={
+            <ProtectedRoute role="receptionniste">
+              <ReceptionAttendance />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/member/attendance"
-  element={
-    <ProtectedRoute role="adherent">
-      <MemberAttendance />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/member/attendance"
+          element={
+            <ProtectedRoute role="adherent">
+              <MemberAttendance />
+            </ProtectedRoute>
+          }
+        />
 
-<Route
-  path="/member/qr-code"
-  element={
-    <ProtectedRoute role="adherent">
-      <MyQrCode />
-    </ProtectedRoute>
-  }
-/>
+        <Route
+          path="/member/qr-code"
+          element={
+            <ProtectedRoute role="adherent">
+              <MyQrCode />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/equipment"
+          element={
+            <ProtectedRoute role="admin">
+              <Equipment />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/admin/maintenances"
+          element={
+            <ProtectedRoute role="admin">
+              <Maintenances />
+            </ProtectedRoute>
+          }
+        />
 
       </Routes>
     </BrowserRouter>
