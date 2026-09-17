@@ -23,6 +23,7 @@ import MemberPrograms from "./pages/member/Programs";
 
 import ReceptionAttendance from "./pages/reception/Attendance";
 import MemberAttendance from "./pages/member/Attendance";
+import MyQrCode from "./pages/member/MyQrCode";
 
 function App() {
   return (
@@ -167,6 +168,15 @@ function App() {
   element={
     <ProtectedRoute role="adherent">
       <MemberAttendance />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member/qr-code"
+  element={
+    <ProtectedRoute role="adherent">
+      <MyQrCode />
     </ProtectedRoute>
   }
 />
