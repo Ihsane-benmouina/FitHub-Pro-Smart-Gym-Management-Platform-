@@ -21,6 +21,9 @@ import Exercises from "./pages/coach/Exercises";
 import CoachPrograms from "./pages/coach/Programs";
 import MemberPrograms from "./pages/member/Programs";
 
+import ReceptionAttendance from "./pages/reception/Attendance";
+import MemberAttendance from "./pages/member/Attendance";
+
 function App() {
   return (
     <BrowserRouter>
@@ -149,6 +152,24 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/reception/attendance"
+  element={
+    <ProtectedRoute role="receptionniste">
+      <ReceptionAttendance />
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/member/attendance"
+  element={
+    <ProtectedRoute role="adherent">
+      <MemberAttendance />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
     </BrowserRouter>
