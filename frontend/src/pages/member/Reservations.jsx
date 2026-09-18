@@ -4,6 +4,8 @@ import api from "../../api/axios";
 function Reservations() {
   const [reservations, setReservations] = useState([]);
   const [message, setMessage] = useState("");
+  const [coaches, setCoaches] = useState([]);
+  const [activities, setActivities] = useState([]);
 
   const [form, setForm] = useState({
     coach_id: "",
@@ -15,6 +17,8 @@ function Reservations() {
 
   useEffect(() => {
     loadReservations();
+    loadCoaches();
+    loadActivities();
   }, []);
 
   const loadReservations = async () => {
@@ -54,8 +58,26 @@ function Reservations() {
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
-          "Erreur lors de la réservation"
+        "Erreur lors de la réservation"
       );
+    }
+  };
+
+  const loadCoaches = async () => {
+    try {
+      const response = await api.get("/coaches");
+      setCoaches(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const loadActivities = async () => {
+    try {
+      const response = await api.get("/activities");
+      setActivities(response.data);
+    } catch (error) {
+      console.error(error);
     }
   };
 
@@ -69,26 +91,37 @@ function Reservations() {
       {message && <p className="mb-4">{message}</p>}
 
       <form onSubmit={handleSubmit} className="mb-8">
-
-        <input
-          type="number"
+        <select
           name="coach_id"
-          placeholder="ID Coach"
           value={form.coach_id}
           onChange={handleChange}
           className="border p-2 block mb-3"
           required
-        />
+        >
+          <option value="">Choisir un coach</option>
 
-        <input
-          type="number"
-          name="activity_id"
-          placeholder="ID Activité"
-          value={form.activity_id}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
+          {coaches.map((coach) => (
+            <option key={coach.id} value={coach.id}>
+              {coach.name}
+            </option>
+          ))}
+        </select>
+
+      <select
+  name="activity_id"
+  value={form.activity_id}
+  onChange={handleChange}
+  className="border p-2 block mb-3"
+  required
+>
+  <option value="">Choisir une activité</option>
+
+  {activities.map((activity) => (
+    <option key={activity.id} value={activity.id}>
+      {activity.name}
+    </option>
+  ))}
+</select>
 
         <input
           type="date"
