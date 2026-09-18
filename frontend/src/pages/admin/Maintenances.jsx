@@ -4,6 +4,7 @@ import api from "../../api/axios";
 function Maintenances() {
   const [maintenances, setMaintenances] = useState([]);
   const [message, setMessage] = useState("");
+  const [equipment, setEquipment] = useState([]);
 
   const [form, setForm] = useState({
     equipment_id: "",
@@ -12,9 +13,10 @@ function Maintenances() {
     scheduled_date: "",
   });
 
-  useEffect(() => {
-    loadMaintenances();
-  }, []);
+ useEffect(() => {
+  loadMaintenances();
+  loadEquipment();
+}, []);
 
   const loadMaintenances = async () => {
     try {
@@ -71,6 +73,14 @@ function Maintenances() {
       );
     }
   };
+  const loadEquipment = async () => {
+  try {
+    const response = await api.get("/equipment-list");
+    setEquipment(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
 
   return (
     <div className="p-6">
@@ -81,15 +91,22 @@ function Maintenances() {
       {message && <p className="mb-4">{message}</p>}
 
       <form onSubmit={handleSubmit} className="mb-8">
-        <input
-          type="number"
-          name="equipment_id"
-          value={form.equipment_id}
-          onChange={handleChange}
-          placeholder="ID Équipement"
-          className="border p-2 block mb-2"
-          required
-        />
+      <select
+  name="equipment_id"
+  value={form.equipment_id}
+  onChange={handleChange}
+  className="border p-2 block mb-2"
+  required
+>
+  <option value="">Choisir un équipement</option>
+
+  {equipment.map((item) => (
+    <option key={item.id} value={item.id}>
+      {item.name}
+      {item.serial_number ? ` - ${item.serial_number}` : ""}
+    </option>
+  ))}
+</select>
 
         <textarea
           name="description"

@@ -17,6 +17,7 @@ use App\Http\Controllers\Api\MaintenanceController;
 use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\AdminUserController;
+use App\Http\Controllers\Api\ReferenceDataController;
 
 Route::prefix('auth')->group(function () {
 
@@ -154,4 +155,18 @@ Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
 
     Route::put('/admin/users/{id}/status', [AdminUserController::class, 'toggleStatus']);
 
+});
+
+
+Route::middleware('auth:sanctum')->group(function () {
+
+    Route::get('/coaches', [ReferenceDataController::class, 'coaches']);
+
+    Route::get('/activities', [ReferenceDataController::class, 'activities']);
+
+    Route::get('/members', [ReferenceDataController::class, 'members'])
+        ->middleware('check.role:coach,admin,receptionniste');
+
+    Route::get('/equipment-list', [ReferenceDataController::class, 'equipment'])
+        ->middleware('check.role:admin');
 });

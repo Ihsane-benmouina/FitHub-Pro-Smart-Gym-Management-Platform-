@@ -4,7 +4,7 @@ import api from "../../api/axios";
 function Programs() {
   const [programs, setPrograms] = useState([]);
   const [message, setMessage] = useState("");
-
+const [members, setMembers] = useState([]);
   const [form, setForm] = useState({
     member_id: "",
     title: "",
@@ -14,9 +14,10 @@ function Programs() {
     end_date: "",
   });
 
-  useEffect(() => {
-    loadPrograms();
-  }, []);
+useEffect(() => {
+  loadPrograms();
+  loadMembers();
+}, []);
 
   const loadPrograms = async () => {
     try {
@@ -61,6 +62,15 @@ function Programs() {
     }
   };
 
+  const loadMembers = async () => {
+  try {
+    const response = await api.get("/members");
+    setMembers(response.data);
+  } catch (error) {
+    console.error(error);
+  }
+};
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">
@@ -70,15 +80,21 @@ function Programs() {
       {message && <p className="mb-4">{message}</p>}
 
       <form onSubmit={handleSubmit} className="mb-8">
-        <input
-          type="number"
-          name="member_id"
-          placeholder="ID Adhérent"
-          value={form.member_id}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
+      <select
+  name="member_id"
+  value={form.member_id}
+  onChange={handleChange}
+  className="border p-2 block mb-3"
+  required
+>
+  <option value="">Choisir un adhérent</option>
+
+  {members.map((member) => (
+    <option key={member.id} value={member.id}>
+      {member.name}
+    </option>
+  ))}
+</select>
 
         <input
           type="text"
