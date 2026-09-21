@@ -33,7 +33,7 @@ import MemberProgress from "./pages/member/Progress";
 import ReceptionPayments from "./pages/reception/Payments";
 import ForgotPassword from "./pages/auth/ForgotPassword";
 import ResetPassword from "./pages/auth/ResetPassword";
-
+import Activities from "./pages/admin/Activities";
 function App() {
   return (
     <BrowserRouter>
@@ -259,6 +259,15 @@ function App() {
 <Route
   path="/reset-password"
   element={<ResetPassword />}
+/>
+
+<Route
+  path="/admin/activities"
+  element={
+    <ProtectedRoute role="admin">
+      <Activities />
+    </ProtectedRoute>
+  }
 />
 
       </Routes>

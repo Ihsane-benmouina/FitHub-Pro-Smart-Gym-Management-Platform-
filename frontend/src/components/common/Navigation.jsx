@@ -62,21 +62,21 @@ function Navigation() {
                 </>
             )}
 
-           {user.role === "receptionniste" && (
-  <>
-    <Link className="mr-4" to="/reception">
-      Accueil
-    </Link>
+            {user.role === "receptionniste" && (
+                <>
+                    <Link className="mr-4" to="/reception">
+                        Accueil
+                    </Link>
 
-    <Link className="mr-4" to="/reception/attendance">
-      Présences
-    </Link>
+                    <Link className="mr-4" to="/reception/attendance">
+                        Présences
+                    </Link>
 
-    <Link className="mr-4" to="/reception/payments">
-      Paiements
-    </Link>
-  </>
-)}
+                    <Link className="mr-4" to="/reception/payments">
+                        Paiements
+                    </Link>
+                </>
+            )}
 
             {user.role === "admin" && (
                 <>
@@ -98,6 +98,12 @@ function Navigation() {
 
                     <Link className="mr-4" to="/admin/maintenances">
                         Maintenances
+                    </Link>
+                    <Link
+                        className="mr-4"
+                        to="/admin/activities"
+                    >
+                        Activités
                     </Link>
                 </>
             )}

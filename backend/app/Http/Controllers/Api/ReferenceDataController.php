@@ -30,14 +30,14 @@ class ReferenceDataController extends Controller
         );
     }
 
-    public function activities()
-    {
-        return response()->json(
-            Activity::where('is_active', true)
-                ->select('id', 'name')
-                ->get()
-        );
-    }
+  public function activities()
+{
+    return response()->json(
+        Activity::with('coaches')
+            ->where('is_active', true)
+            ->get()
+    );
+}
 
     public function equipment()
     {
