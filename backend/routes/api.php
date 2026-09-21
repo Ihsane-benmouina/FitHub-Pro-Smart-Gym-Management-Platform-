@@ -18,6 +18,7 @@ use App\Http\Controllers\Api\AttendanceController;
 use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\AdminUserController;
 use App\Http\Controllers\Api\ReferenceDataController;
+use App\Http\Controllers\Api\ProgressRecordController;
 
 Route::prefix('auth')->group(function () {
 
@@ -169,4 +170,20 @@ Route::middleware('auth:sanctum')->group(function () {
 
     Route::get('/equipment-list', [ReferenceDataController::class, 'equipment'])
         ->middleware('check.role:admin');
+});
+
+Route::middleware(['auth:sanctum', 'check.role:coach'])->group(function () {
+    Route::post('/progress-records', [ProgressRecordController::class, 'store']);
+
+    Route::get(
+        '/members/{memberId}/progress',
+        [ProgressRecordController::class, 'memberHistory']
+    );
+});
+
+Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
+    Route::get(
+        '/my-progress',
+        [ProgressRecordController::class, 'myProgress']
+    );
 });

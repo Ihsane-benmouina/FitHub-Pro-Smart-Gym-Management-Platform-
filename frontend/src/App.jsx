@@ -28,6 +28,8 @@ import Equipment from "./pages/admin/Equipment";
 import Maintenances from "./pages/admin/Maintenances";
 import Users from "./pages/admin/Users";
 import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
+import CoachProgress from "./pages/coach/Progress";
+import MemberProgress from "./pages/member/Progress";
 
 function App() {
   return (
@@ -217,6 +219,23 @@ function App() {
           element={
             <ProtectedRoute role="admin">
               <SubscriptionPlans />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/coach/progress"
+          element={
+            <ProtectedRoute role="coach">
+              <CoachProgress />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/member/progress"
+          element={
+            <ProtectedRoute role="adherent">
+              <MemberProgress />
             </ProtectedRoute>
           }
         />
