@@ -82,6 +82,10 @@ Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
 
 Route::middleware(['auth:sanctum', 'check.role:admin,receptionniste'])->group(function () {
     Route::post('/payments', [PaymentController::class, 'store']);
+    Route::get(
+    '/subscriptions-list',
+    [ReferenceDataController::class, 'subscriptions']
+)->middleware('check.role:admin,receptionniste');
 });
 
 
