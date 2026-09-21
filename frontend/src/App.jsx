@@ -31,6 +31,8 @@ import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
 import CoachProgress from "./pages/coach/Progress";
 import MemberProgress from "./pages/member/Progress";
 import ReceptionPayments from "./pages/reception/Payments";
+import ForgotPassword from "./pages/auth/ForgotPassword";
+import ResetPassword from "./pages/auth/ResetPassword";
 
 function App() {
   return (
@@ -248,6 +250,15 @@ function App() {
       <ReceptionPayments />
     </ProtectedRoute>
   }
+/>
+<Route
+  path="/forgot-password"
+  element={<ForgotPassword />}
+/>
+
+<Route
+  path="/reset-password"
+  element={<ResetPassword />}
 />
 
       </Routes>
