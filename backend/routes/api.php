@@ -19,6 +19,8 @@ use App\Http\Controllers\Api\AdminDashboardController;
 use App\Http\Controllers\Api\AdminUserController;
 use App\Http\Controllers\Api\ReferenceDataController;
 use App\Http\Controllers\Api\ProgressRecordController;
+use App\Http\Controllers\Api\ActivityController;
+
 
 Route::prefix('auth')->group(function () {
 
@@ -190,4 +192,35 @@ Route::middleware(['auth:sanctum', 'check.role:adherent'])->group(function () {
         '/my-progress',
         [ProgressRecordController::class, 'myProgress']
     );
+});
+
+Route::middleware([
+    'auth:sanctum',
+    'check.role:admin'
+])->group(function () {
+
+    Route::post('/activities', [
+        ActivityController::class,
+        'store'
+    ]);
+
+    Route::put('/activities/{id}', [
+        ActivityController::class,
+        'update'
+    ]);
+
+    Route::delete('/activities/{id}', [
+        ActivityController::class,
+        'destroy'
+    ]);
+
+    Route::post('/activities/{id}/coaches', [
+        ActivityController::class,
+        'assignCoach'
+    ]);
+
+    Route::delete('/activities/{id}/coaches/{coachId}', [
+        ActivityController::class,
+        'removeCoach'
+    ]);
 });

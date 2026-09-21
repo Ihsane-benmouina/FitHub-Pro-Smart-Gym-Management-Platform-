@@ -3,6 +3,16 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
+
+#[Fillable([
+    'name',
+    'description',
+    'image',
+    'duration_minutes',
+    'capacity',
+    'is_active',
+])]
 
 class Activity extends Model
 {
