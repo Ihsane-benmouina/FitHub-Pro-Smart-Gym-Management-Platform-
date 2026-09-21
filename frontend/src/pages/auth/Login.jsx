@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
-
+import { Link } from "react-router-dom";
 function Login() {
     const navigate = useNavigate();
 
@@ -99,6 +99,14 @@ function Login() {
                         S'inscrire
                     </Link>
                 </p>
+                <div className="mt-4">
+  <Link
+    to="/forgot-password"
+    className="underline"
+  >
+    Mot de passe oublié ?
+  </Link>
+</div>
             </div>
         </div>
     );
