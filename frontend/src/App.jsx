@@ -30,6 +30,7 @@ import Users from "./pages/admin/Users";
 import SubscriptionPlans from "./pages/admin/SubscriptionPlans";
 import CoachProgress from "./pages/coach/Progress";
 import MemberProgress from "./pages/member/Progress";
+import ReceptionPayments from "./pages/reception/Payments";
 
 function App() {
   return (
@@ -239,6 +240,15 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+        <Route
+  path="/reception/payments"
+  element={
+    <ProtectedRoute role="receptionniste">
+      <ReceptionPayments />
+    </ProtectedRoute>
+  }
+/>
 
       </Routes>
     </BrowserRouter>

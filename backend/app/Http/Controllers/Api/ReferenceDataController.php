@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Activity;
 use App\Models\Equipment;
+use App\Models\Subscription;
 
 class ReferenceDataController extends Controller
 {
@@ -45,4 +46,14 @@ class ReferenceDataController extends Controller
                 ->get()
         );
     }
+
+    public function subscriptions()
+{
+    return response()->json(
+        Subscription::with(['member', 'plan'])
+            ->whereIn('status', ['active', 'pending'])
+            ->latest()
+            ->get()
+    );
+}
 }
