@@ -158,6 +158,8 @@ Route::middleware(['auth:sanctum', 'check.role:admin'])->group(function () {
 
     Route::get('/admin/users', [AdminUserController::class, 'index']);
 
+    Route::post('/admin/users', [AdminUserController::class, 'store']);
+
     Route::put('/admin/users/{id}/role', [AdminUserController::class, 'updateRole']);
 
     Route::put('/admin/users/{id}/status', [AdminUserController::class, 'toggleStatus']);

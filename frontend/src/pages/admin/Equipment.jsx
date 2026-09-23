@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import PageHeader from "../../components/ui/PageHeader";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Button from "../../components/ui/Button";
+import StatusBadge from "../../components/ui/StatusBadge";
 
 function Equipment() {
   const [equipment, setEquipment] = useState([]);
@@ -53,7 +59,7 @@ function Equipment() {
         notes: "",
       });
 
-      loadEquipment();
+      await loadEquipment();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -67,7 +73,7 @@ function Equipment() {
       await api.delete(`/equipment/${id}`);
 
       setMessage("Équipement supprimé avec succès");
-      loadEquipment();
+      await loadEquipment();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -77,106 +83,174 @@ function Equipment() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Gestion des équipements
-      </h1>
+  <div>
+    <PageHeader
+      title="Équipements"
+      description="Gérez le matériel et les équipements de votre salle"
+    />
 
-      {message && <p className="mb-4">{message}</p>}
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      {/* FORMULAIRE */}
+      <Card>
+        <div className="mb-6">
+          <h2 className="font-bold text-slate-800">
+            Nouvel équipement
+          </h2>
 
-      <form onSubmit={handleSubmit} className="mb-8">
-        <input
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Nom"
-          className="border p-2 block mb-2"
-          required
-        />
+          <p className="text-xs text-slate-400 mt-1">
+            Ajoutez un équipement à FitHub Pro
+          </p>
+        </div>
 
-        <input
-          name="serial_number"
-          value={form.serial_number}
-          onChange={handleChange}
-          placeholder="Numéro de série"
-          className="border p-2 block mb-2"
-        />
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Input
+            label="Nom"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Ex : Tapis de course"
+            required
+          />
 
-        <input
-          name="category"
-          value={form.category}
-          onChange={handleChange}
-          placeholder="Catégorie"
-          className="border p-2 block mb-2"
-        />
+          <Input
+            label="Numéro de série"
+            name="serial_number"
+            value={form.serial_number}
+            onChange={handleChange}
+            placeholder="Ex : FIT-001"
+          />
 
-        <input
-          type="date"
-          name="purchase_date"
-          value={form.purchase_date}
-          onChange={handleChange}
-          className="border p-2 block mb-2"
-        />
+          <Input
+            label="Catégorie"
+            name="category"
+            value={form.category}
+            onChange={handleChange}
+            placeholder="Ex : Cardio"
+          />
 
-        <select
-          name="status"
-          value={form.status}
-          onChange={handleChange}
-          className="border p-2 block mb-2"
-        >
-          <option value="available">Disponible</option>
-          <option value="in_use">En utilisation</option>
-          <option value="maintenance">Maintenance</option>
-          <option value="out_of_service">Hors service</option>
-        </select>
+          <Input
+            label="Localisation"
+            name="location"
+            value={form.location}
+            onChange={handleChange}
+            placeholder="Ex : Salle cardio"
+          />
 
-        <input
-          name="location"
-          value={form.location}
-          onChange={handleChange}
-          placeholder="Emplacement"
-          className="border p-2 block mb-2"
-        />
+          <Input
+            label="Date d'achat"
+            type="date"
+            name="purchase_date"
+            value={form.purchase_date}
+            onChange={handleChange}
+          />
 
-        <textarea
-          name="notes"
-          value={form.notes}
-          onChange={handleChange}
-          placeholder="Notes"
-          className="border p-2 block mb-3"
-        />
+          <Button type="submit" className="w-full">
+            + Ajouter l'équipement
+          </Button>
+        </form>
+      </Card>
 
-        <button className="bg-black text-white px-4 py-2">
-          Ajouter
-        </button>
-      </form>
+      {/* LISTE */}
+      <div className="xl:col-span-2">
+        <Card className="p-0 overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-100">
+            <h2 className="font-bold text-slate-800">
+              Liste des équipements
+            </h2>
 
-      <h2 className="text-xl font-bold mb-4">
-        Liste des équipements
-      </h2>
-
-      {equipment.length === 0 ? (
-        <p>Aucun équipement.</p>
-      ) : (
-        equipment.map((item) => (
-          <div key={item.id} className="border p-4 mb-3">
-            <strong>{item.name}</strong>
-
-            <p>Catégorie : {item.category}</p>
-            <p>Statut : {item.status}</p>
-            <p>Emplacement : {item.location}</p>
-
-            <button
-              onClick={() => handleDelete(item.id)}
-              className="border px-3 py-1 mt-2"
-            >
-              Supprimer
-            </button>
+            <p className="text-xs text-slate-400 mt-1">
+              {equipment.length} équipement(s)
+            </p>
           </div>
-        ))
-      )}
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="bg-slate-50 text-xs text-slate-400 uppercase">
+                  <th className="px-6 py-4 font-medium">
+                    Équipement
+                  </th>
+
+                  <th className="px-6 py-4 font-medium">
+                    Catégorie
+                  </th>
+
+                  <th className="px-6 py-4 font-medium">
+                    Localisation
+                  </th>
+
+                  <th className="px-6 py-4 font-medium">
+                    Statut
+                  </th>
+
+                  <th className="px-6 py-4 font-medium">
+                    Action
+                  </th>
+                </tr>
+              </thead>
+
+              <tbody className="divide-y divide-slate-100">
+                {equipment.map((item) => (
+                  <tr
+                    key={item.id}
+                    className="hover:bg-slate-50/60 transition"
+                  >
+                    <td className="px-6 py-4">
+                      <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-violet-50 text-violet-500 flex items-center justify-center">
+                          ◆
+                        </div>
+
+                        <div>
+                          <p className="text-sm font-semibold text-slate-700">
+                            {item.name}
+                          </p>
+
+                          <p className="text-xs text-slate-400 mt-1">
+                            {item.serial_number || "Sans numéro"}
+                          </p>
+                        </div>
+                      </div>
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-slate-500">
+                      {item.category || "-"}
+                    </td>
+
+                    <td className="px-6 py-4 text-sm text-slate-500">
+                      {item.location || "-"}
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <StatusBadge status={item.status} />
+                    </td>
+
+                    <td className="px-6 py-4">
+                      <Button
+                        variant="danger"
+                        onClick={() =>
+                          handleDelete(item.id)
+                        }
+                      >
+                        Supprimer
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {equipment.length === 0 && (
+            <div className="p-10 text-center text-sm text-slate-400">
+              Aucun équipement enregistré.
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Equipment;

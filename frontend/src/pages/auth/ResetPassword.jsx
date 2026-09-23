@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import api from "../../api/axios";
+import AuthLayout from "../../layouts/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 
 function ResetPassword() {
   const navigate = useNavigate();
@@ -14,6 +17,7 @@ function ResetPassword() {
   });
 
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({
@@ -26,9 +30,10 @@ function ResetPassword() {
     e.preventDefault();
 
     setMessage("");
+    setError("");
 
     if (form.password !== form.password_confirmation) {
-      setMessage("Les mots de passe ne correspondent pas");
+      setError("Les mots de passe ne correspondent pas");
       return;
     }
 
@@ -44,7 +49,7 @@ function ResetPassword() {
         navigate("/login");
       }, 1500);
     } catch (error) {
-      setMessage(
+      setError(
         error.response?.data?.message ||
           "Impossible de réinitialiser le mot de passe"
       );
@@ -52,75 +57,69 @@ function ResetPassword() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Nouveau mot de passe
-      </h1>
-
-      {message && (
-        <p className="mb-4">
-          {message}
-        </p>
-      )}
-
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          name="email"
-          placeholder="Adresse email"
-          value={form.email}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
-
-        <input
-          type="text"
-          name="token"
-          placeholder="Token"
-          value={form.token}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
-
-        <input
-          type="password"
-          name="password"
-          placeholder="Nouveau mot de passe"
-          value={form.password}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-          minLength="8"
-        />
-
-        <input
-          type="password"
-          name="password_confirmation"
-          placeholder="Confirmer le mot de passe"
-          value={form.password_confirmation}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-          minLength="8"
-        />
-
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Réinitialiser
-        </button>
-      </form>
-
-      <div className="mt-6">
-        <Link to="/login" className="underline">
-          Retour à la connexion
-        </Link>
+  <AuthLayout
+    title="Nouveau mot de passe"
+    subtitle="Choisissez un nouveau mot de passe sécurisé."
+  >
+    {message && (
+      <div className="mb-5 px-4 py-3 bg-emerald-50 text-emerald-600 rounded-xl text-sm">
+        {message}
       </div>
+    )}
+
+    {error && (
+      <div className="mb-5 px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-sm">
+        {error}
+      </div>
+    )}
+
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <Input
+        label="Email"
+        type="email"
+        name="email"
+        value={form.email}
+        readOnly
+      />
+
+      <Input
+        label="Nouveau mot de passe"
+        type="password"
+        name="password"
+        value={form.password}
+        onChange={handleChange}
+        placeholder="••••••••"
+        required
+      />
+
+      <Input
+        label="Confirmer le mot de passe"
+        type="password"
+        name="password_confirmation"
+        value={form.password_confirmation}
+        onChange={handleChange}
+        placeholder="••••••••"
+        required
+      />
+
+      <Button
+        type="submit"
+        className="w-full py-3"
+      >
+        Modifier le mot de passe
+      </Button>
+    </form>
+
+    <div className="text-center mt-7">
+      <Link
+        to="/login"
+        className="text-sm text-slate-500 hover:text-pink-500"
+      >
+        ← Retour à la connexion
+      </Link>
     </div>
-  );
+  </AuthLayout>
+);
 }
 
 export default ResetPassword;

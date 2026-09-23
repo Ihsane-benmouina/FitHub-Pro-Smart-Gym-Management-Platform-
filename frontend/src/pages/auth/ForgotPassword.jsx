@@ -1,16 +1,21 @@
 import { useState } from "react";
-import { Link } from "react-router-dom";
 import api from "../../api/axios";
+import { Link } from "react-router-dom";
+import AuthLayout from "../../layouts/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
   const [token, setToken] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     setMessage("");
+    setError("");
     setToken("");
 
     try {
@@ -26,7 +31,7 @@ function ForgotPassword() {
         setToken(response.data.token);
       }
     } catch (error) {
-      setMessage(
+      setError(
         error.response?.data?.message ||
           "Une erreur est survenue"
       );
@@ -34,67 +39,71 @@ function ForgotPassword() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Mot de passe oublié
-      </h1>
+  <AuthLayout
+    title="Mot de passe oublié ?"
+    subtitle="Entrez votre email pour réinitialiser votre mot de passe."
+  >
+    {message && (
+      <div className="mb-5 px-4 py-3 bg-emerald-50 text-emerald-600 rounded-xl text-sm">
+        {message}
+      </div>
+    )}
 
-      <p className="mb-4">
-        Entrez votre adresse email pour réinitialiser votre mot de passe.
-      </p>
+    {error && (
+      <div className="mb-5 px-4 py-3 bg-rose-50 text-rose-500 rounded-xl text-sm">
+        {error}
+      </div>
+    )}
 
-      {message && (
-        <p className="mb-4">
-          {message}
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <Input
+        label="Adresse email"
+        type="email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        placeholder="nom@email.com"
+        required
+      />
+
+      <Button
+        type="submit"
+        className="w-full py-3"
+      >
+        Envoyer la demande
+      </Button>
+    </form>
+
+    {/* Garder ceci seulement si ton backend retourne
+        le token en développement */}
+    {token && (
+      <div className="mt-5 p-4 bg-amber-50 rounded-xl">
+        <p className="text-xs text-amber-600">
+          Token de développement
         </p>
-      )}
 
-      <form onSubmit={handleSubmit}>
-        <input
-          type="email"
-          placeholder="Adresse email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          className="border p-2 block mb-3"
-          required
-        />
+        <p className="text-xs text-slate-500 break-all mt-2">
+          {token}
+        </p>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
+        <Link
+          to={`/reset-password?token=${token}&email=${email}`}
+          className="inline-block mt-3 text-sm font-semibold text-pink-500"
         >
-          Envoyer
-        </button>
-      </form>
-
-      {token && (
-        <div className="mt-6">
-          <p className="mb-2">
-            Token de réinitialisation :
-          </p>
-
-          <p className="border p-2 mb-3 break-all">
-            {token}
-          </p>
-
-          <Link
-            to={`/reset-password?token=${encodeURIComponent(
-              token
-            )}&email=${encodeURIComponent(email)}`}
-            className="underline"
-          >
-            Réinitialiser mon mot de passe
-          </Link>
-        </div>
-      )}
-
-      <div className="mt-6">
-        <Link to="/login" className="underline">
-          Retour à la connexion
+          Réinitialiser le mot de passe →
         </Link>
       </div>
+    )}
+
+    <div className="text-center mt-7">
+      <Link
+        to="/login"
+        className="text-sm font-medium text-slate-500 hover:text-pink-500"
+      >
+        ← Retour à la connexion
+      </Link>
     </div>
-  );
+  </AuthLayout>
+);
 }
 
 export default ForgotPassword;

@@ -1,8 +1,14 @@
 import { useEffect, useState } from "react";
 import api from "../api/axios";
+import PageHeader from "../components/ui/PageHeader";
+import Card from "../components/ui/Card";
+import Input from "../components/ui/Input";
+import Select from "../components/ui/Select";
+import Button from "../components/ui/Button";
 
 
 function Profile() {
+  const [user, setUser] = useState(null);
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -21,14 +27,15 @@ function Profile() {
     try {
       const response = await api.get("/profile");
 
-      const user = response.data.user;
+      const profileUser = response.data.user;
 
+      setUser(profileUser);
       setForm({
-        name: user.name || "",
-        phone: user.phone || "",
-        birth_date: user.birth_date || "",
-        gender: user.gender || "",
-        address: user.address || "",
+        name: profileUser.name || "",
+        phone: profileUser.phone || "",
+        birth_date: profileUser.birth_date || "",
+        gender: profileUser.gender || "",
+        address: profileUser.address || "",
       });
     } catch (error) {
       console.error(error);
@@ -59,78 +66,106 @@ function Profile() {
     }
   };
 
-  return (
-    <div className="p-6">
+ return (
+  <div>
+    <PageHeader
+      title="Mon profil"
+      description="Consultez et modifiez vos informations personnelles"
+    />
 
-      <h1 className="text-2xl font-bold mb-6">
-        Mon profil
-      </h1>
+    {message && (
+      <div className="mb-6 px-4 py-3 rounded-xl bg-emerald-50 text-emerald-600 text-sm">
+        {message}
+      </div>
+    )}
 
-      {message && (
-        <p className="mb-4">
-          {message}
-        </p>
-      )}
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      {/* PROFILE CARD */}
+      <Card>
+        <div className="text-center">
+          <div className="w-20 h-20 mx-auto rounded-2xl bg-gradient-to-br from-pink-500 to-violet-500 text-white flex items-center justify-center text-3xl font-bold">
+            {user?.name?.charAt(0)?.toUpperCase()}
+          </div>
 
-      <form onSubmit={handleSubmit} className="max-w-lg">
+          <h2 className="font-bold text-slate-800 mt-4">
+            {user?.name}
+          </h2>
 
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Nom"
-          className="border p-2 w-full mb-3"
-        />
+          <p className="text-sm text-slate-400 mt-1">
+            {user?.email}
+          </p>
 
-        <input
-          type="text"
-          name="phone"
-          value={form.phone}
-          onChange={handleChange}
-          placeholder="Téléphone"
-          className="border p-2 w-full mb-3"
-        />
+          <span className="inline-block mt-4 px-3 py-1 bg-pink-50 text-pink-500 rounded-full text-xs font-medium capitalize">
+            {user?.role}
+          </span>
+        </div>
+      </Card>
 
-        <input
-          type="date"
-          name="birth_date"
-          value={form.birth_date}
-          onChange={handleChange}
-          className="border p-2 w-full mb-3"
-        />
+      {/* FORM */}
+      <Card className="xl:col-span-2">
+        <h2 className="font-bold text-slate-800 mb-6">
+          Informations personnelles
+        </h2>
 
-        <select
-          name="gender"
-          value={form.gender}
-          onChange={handleChange}
-          className="border p-2 w-full mb-3"
-        >
-          <option value="">Genre</option>
-          <option value="homme">Homme</option>
-          <option value="femme">Femme</option>
-        </select>
+        <form onSubmit={handleSubmit} className="space-y-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Nom complet"
+              name="name"
+              value={form.name}
+              onChange={handleChange}
+            />
 
-        <input
-          type="text"
-          name="address"
-          value={form.address}
-          onChange={handleChange}
-          placeholder="Adresse"
-          className="border p-2 w-full mb-3"
-        />
+            <Input
+              label="Téléphone"
+              name="phone"
+              value={form.phone || ""}
+              onChange={handleChange}
+            />
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Modifier
-        </button>
+            <Input
+              label="Date de naissance"
+              type="date"
+              name="birth_date"
+              value={form.birth_date || ""}
+              onChange={handleChange}
+            />
 
-      </form>
+            <Select
+              label="Genre"
+              name="gender"
+              value={form.gender || ""}
+              onChange={handleChange}
+            >
+              <option value="">
+                Sélectionner
+              </option>
 
+              <option value="homme">
+                Homme
+              </option>
+
+              <option value="femme">
+                Femme
+              </option>
+            </Select>
+          </div>
+
+          <Input
+            label="Adresse"
+            name="address"
+            value={form.address || ""}
+            onChange={handleChange}
+          />
+
+          <Button type="submit">
+            Enregistrer les modifications
+          </Button>
+        </form>
+      </Card>
     </div>
-  );
+  </div>
+);
 }
 
 export default Profile;
