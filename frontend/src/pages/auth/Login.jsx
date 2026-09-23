@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../api/axios";
-import { Link } from "react-router-dom";
+import AuthLayout from "../../layouts/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 function Login() {
     const navigate = useNavigate();
 
     const [form, setForm] = useState({
-        email: "",
+        login: "",
         password: "",
     });
 
@@ -47,69 +49,66 @@ function Login() {
         }
     };
 
-    return (
-        <div className="min-h-screen flex items-center justify-center bg-gray-100">
-            <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
-
-                <h1 className="text-3xl font-bold text-center mb-2">
-                    FitHub Pro
-                </h1>
-
-                <p className="text-gray-500 text-center mb-6">
-                    Connectez-vous à votre espace
-                </p>
-
-                {error && (
-                    <div className="bg-red-100 text-red-600 p-3 rounded mb-4">
-                        {error}
-                    </div>
-                )}
-
-                <form onSubmit={handleSubmit}>
-
-                    <input
-                        type="email"
-                        name="email"
-                        placeholder="Email"
-                        value={form.email}
-                        onChange={handleChange}
-                        className="w-full border p-3 rounded-lg mb-4"
-                    />
-
-                    <input
-                        type="password"
-                        name="password"
-                        placeholder="Mot de passe"
-                        value={form.password}
-                        onChange={handleChange}
-                        className="w-full border p-3 rounded-lg mb-4"
-                    />
-
-                    <button
-                        type="submit"
-                        className="w-full bg-gray-900 text-white p-3 rounded-lg"
-                    >
-                        Se connecter
-                    </button>
-
-                </form>
-                <p className="text-center mt-5 text-gray-500">
-                    Pas encore de compte ?{" "}
-                    <Link to="/register" className="font-semibold text-gray-900">
-                        S'inscrire
-                    </Link>
-                </p>
-                <div className="mt-4">
-  <Link
-    to="/forgot-password"
-    className="underline"
+   return (
+  <AuthLayout
+    title="Bienvenue 👋"
+    subtitle="Connectez-vous pour accéder à votre espace FitHub Pro."
   >
-    Mot de passe oublié ?
-  </Link>
-</div>
-            </div>
-        </div>
-    );
+    {error && (
+      <div className="mb-5 px-4 py-3 rounded-xl bg-rose-50 text-rose-500 text-sm">
+        {error}
+      </div>
+    )}
+
+    <form onSubmit={handleSubmit} className="space-y-5">
+      <Input
+        label="Email ou nom d'utilisateur"
+        type="text"
+        name="login"
+        value={form.login}
+        onChange={handleChange}
+        placeholder="Votre email ou username"
+        required
+      />
+
+      <Input
+        label="Mot de passe"
+        type="password"
+        name="password"
+        value={form.password}
+        onChange={handleChange}
+        placeholder="••••••••"
+        required
+      />
+
+      <div className="flex justify-end">
+        <Link
+          to="/forgot-password"
+          className="text-sm font-medium text-pink-500 hover:text-pink-600"
+        >
+          Mot de passe oublié ?
+        </Link>
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full py-3"
+      >
+        Se connecter
+      </Button>
+    </form>
+
+    <p className="text-center text-sm text-slate-400 mt-7">
+      Pas encore membre ?{" "}
+      <Link
+        to="/register"
+        className="font-semibold text-pink-500"
+      >
+        Créer un compte
+      </Link>
+    </p>
+  </AuthLayout>
+);
 }
 
 export default Login;

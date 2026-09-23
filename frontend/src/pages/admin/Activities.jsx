@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import PageHeader from "../../components/ui/PageHeader";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Button from "../../components/ui/Button";
 
 function Activities() {
   const [activities, setActivities] = useState([]);
@@ -133,204 +138,275 @@ function Activities() {
     }
   };
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Gestion des activités
-      </h1>
+ return (
+  <div>
+    <PageHeader
+      title="Activités"
+      description="Gérez les activités sportives et leurs coachs"
+    />
 
-      {message && (
-        <p className="mb-4">{message}</p>
-      )}
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-7">
 
-      <h2 className="text-xl font-bold mb-4">
-        Ajouter une activité
-      </h2>
+      {/* AJOUT ACTIVITÉ */}
+      <Card>
+        <div className="mb-6">
+          <h2 className="font-bold text-slate-800">
+            Nouvelle activité
+          </h2>
 
-      <form
-        onSubmit={createActivity}
-        className="mb-8"
-      >
-        <input
-          type="text"
-          name="name"
-          value={form.name}
-          onChange={handleChange}
-          placeholder="Nom de l'activité"
-          className="border p-2 block mb-2"
-          required
-        />
+          <p className="text-xs text-slate-400 mt-1">
+            Ajoutez une activité proposée par la salle
+          </p>
+        </div>
 
-        <textarea
-          name="description"
-          value={form.description}
-          onChange={handleChange}
-          placeholder="Description"
-          className="border p-2 block mb-2"
-        />
-
-        <input
-          type="number"
-          min="1"
-          name="duration_minutes"
-          value={form.duration_minutes}
-          onChange={handleChange}
-          placeholder="Durée en minutes"
-          className="border p-2 block mb-2"
-        />
-
-        <input
-          type="number"
-          min="1"
-          name="capacity"
-          value={form.capacity}
-          onChange={handleChange}
-          placeholder="Capacité"
-          className="border p-2 block mb-3"
-        />
-
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
+        <form
+          onSubmit={createActivity}
+          className="space-y-4"
         >
-          Ajouter
-        </button>
-      </form>
+          <Input
+            label="Nom de l'activité"
+            type="text"
+            name="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Ex : Musculation"
+            required
+          />
 
-      <h2 className="text-xl font-bold mb-4">
-        Associer un coach
-      </h2>
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-2">
+              Description
+            </label>
 
-      <form
-        onSubmit={assignCoach}
-        className="mb-8"
-      >
-        <select
-          value={coachForm.activity_id}
-          onChange={(e) =>
-            setCoachForm({
-              ...coachForm,
-              activity_id: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-          required
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              placeholder="Description de l'activité..."
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
+              rows="4"
+            />
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <Input
+              label="Durée"
+              type="number"
+              min="1"
+              name="duration_minutes"
+              value={form.duration_minutes}
+              onChange={handleChange}
+              placeholder="60 minutes"
+            />
+
+            <Input
+              label="Capacité"
+              type="number"
+              min="1"
+              name="capacity"
+              value={form.capacity}
+              onChange={handleChange}
+              placeholder="20 personnes"
+            />
+          </div>
+
+          <Button type="submit">
+            + Ajouter l'activité
+          </Button>
+        </form>
+      </Card>
+
+      {/* ASSOCIATION COACH */}
+      <Card>
+        <div className="mb-6">
+          <h2 className="font-bold text-slate-800">
+            Associer un coach
+          </h2>
+
+          <p className="text-xs text-slate-400 mt-1">
+            Affectez un coach à une activité
+          </p>
+        </div>
+
+        <form
+          onSubmit={assignCoach}
+          className="space-y-4"
         >
-          <option value="">
-            Choisir une activité
-          </option>
-
-          {activities.map((activity) => (
-            <option
-              key={activity.id}
-              value={activity.id}
-            >
-              {activity.name}
+          <Select
+            label="Activité"
+            value={coachForm.activity_id}
+            onChange={(e) =>
+              setCoachForm({
+                ...coachForm,
+                activity_id: e.target.value,
+              })
+            }
+            required
+          >
+            <option value="">
+              Choisir une activité
             </option>
-          ))}
-        </select>
 
-        <select
-          value={coachForm.coach_id}
-          onChange={(e) =>
-            setCoachForm({
-              ...coachForm,
-              coach_id: e.target.value,
-            })
-          }
-          className="border p-2 block mb-3"
-          required
-        >
-          <option value="">
-            Choisir un coach
-          </option>
+            {activities.map((activity) => (
+              <option
+                key={activity.id}
+                value={activity.id}
+              >
+                {activity.name}
+              </option>
+            ))}
+          </Select>
 
-          {coaches.map((coach) => (
-            <option key={coach.id} value={coach.id}>
-              {coach.name}
+          <Select
+            label="Coach"
+            value={coachForm.coach_id}
+            onChange={(e) =>
+              setCoachForm({
+                ...coachForm,
+                coach_id: e.target.value,
+              })
+            }
+            required
+          >
+            <option value="">
+              Choisir un coach
             </option>
-          ))}
-        </select>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Associer
-        </button>
-      </form>
+            {coaches.map((coach) => (
+              <option
+                key={coach.id}
+                value={coach.id}
+              >
+                {coach.name}
+              </option>
+            ))}
+          </Select>
 
-      <h2 className="text-xl font-bold mb-4">
-        Liste des activités
-      </h2>
+          <Button type="submit">
+            Associer le coach
+          </Button>
+        </form>
+      </Card>
+    </div>
+
+    {message && (
+      <div className="mb-6 px-4 py-3 bg-pink-50 text-pink-600 rounded-xl text-sm">
+        {message}
+      </div>
+    )}
+
+    {/* LISTE */}
+    <Card className="p-0 overflow-hidden">
+      <div className="px-6 py-5 border-b border-slate-100">
+        <h2 className="font-bold text-slate-800">
+          Activités disponibles
+        </h2>
+
+        <p className="text-xs text-slate-400 mt-1">
+          {activities.length} activité(s)
+        </p>
+      </div>
 
       {activities.length === 0 ? (
-        <p>Aucune activité.</p>
+        <div className="p-10 text-center text-sm text-slate-400">
+          Aucune activité disponible.
+        </div>
       ) : (
-        activities.map((activity) => (
-          <div
-            key={activity.id}
-            className="border p-4 mb-4"
-          >
-            <h3 className="font-bold">
-              {activity.name}
-            </h3>
-
-            <p>
-              {activity.description || "Aucune description"}
-            </p>
-
-            <p>
-              Durée : {activity.duration_minutes || "-"} min
-            </p>
-
-            <p>
-              Capacité : {activity.capacity || "-"}
-            </p>
-
-            <div className="mt-3">
-              <strong>Coachs :</strong>
-
-              {!activity.coaches ||
-              activity.coaches.length === 0 ? (
-                <p>Aucun coach associé.</p>
-              ) : (
-                activity.coaches.map((coach) => (
-                  <div
-                    key={coach.id}
-                    className="mt-2"
-                  >
-                    {coach.name}
-
-                    <button
-                      onClick={() =>
-                        removeCoach(
-                          activity.id,
-                          coach.id
-                        )
-                      }
-                      className="border px-2 py-1 ml-3"
-                    >
-                      Retirer
-                    </button>
-                  </div>
-                ))
-              )}
-            </div>
-
-            <button
-              onClick={() =>
-                deleteActivity(activity.id)
-              }
-              className="border px-3 py-2 mt-4"
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5 p-6">
+          {activities.map((activity) => (
+            <div
+              key={activity.id}
+              className="border border-slate-100 rounded-2xl p-5 hover:shadow-md transition"
             >
-              Supprimer l'activité
-            </button>
-          </div>
-        ))
+              <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-pink-500 to-violet-500 text-white flex items-center justify-center mb-4">
+                ◆
+              </div>
+
+              <h3 className="font-bold text-slate-800">
+                {activity.name}
+              </h3>
+
+              <p className="text-xs text-slate-400 mt-2 min-h-8">
+                {activity.description ||
+                  "Aucune description"}
+              </p>
+
+              <div className="flex gap-4 mt-5 text-xs">
+                <div>
+                  <span className="text-slate-400">
+                    Durée
+                  </span>
+
+                  <p className="font-semibold text-slate-700 mt-1">
+                    {activity.duration_minutes || "-"} min
+                  </p>
+                </div>
+
+                <div>
+                  <span className="text-slate-400">
+                    Capacité
+                  </span>
+
+                  <p className="font-semibold text-slate-700 mt-1">
+                    {activity.capacity || "-"}
+                  </p>
+                </div>
+              </div>
+
+              <div className="mt-5 pt-4 border-t border-slate-100">
+                <p className="text-xs font-medium text-slate-500 mb-3">
+                  Coachs
+                </p>
+
+                {!activity.coaches ||
+                activity.coaches.length === 0 ? (
+                  <p className="text-xs text-slate-400">
+                    Aucun coach associé
+                  </p>
+                ) : (
+                  <div className="space-y-2">
+                    {activity.coaches.map((coach) => (
+                      <div
+                        key={coach.id}
+                        className="flex justify-between items-center"
+                      >
+                        <span className="text-sm text-slate-600">
+                          {coach.name}
+                        </span>
+
+                        <button
+                          onClick={() =>
+                            removeCoach(
+                              activity.id,
+                              coach.id
+                            )
+                          }
+                          className="text-xs text-rose-500"
+                        >
+                          Retirer
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+
+              <Button
+                variant="danger"
+                className="w-full mt-5"
+                onClick={() =>
+                  deleteActivity(activity.id)
+                }
+              >
+                Supprimer
+              </Button>
+            </div>
+          ))}
+        </div>
       )}
-    </div>
-  );
+    </Card>
+  </div>
+);
 }
 
 export default Activities;

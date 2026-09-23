@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import api from "../../api/axios";
+import AuthLayout from "../../layouts/AuthLayout";
+import Input from "../../components/ui/Input";
+import Button from "../../components/ui/Button";
 
 function Register() {
   const navigate = useNavigate();
@@ -41,81 +44,82 @@ function Register() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="bg-white p-8 rounded-xl shadow-md w-full max-w-md">
+    <AuthLayout
+      title="Créer un compte"
+      subtitle="Rejoignez FitHub Pro et commencez votre parcours sportif."
+    >
+      {error && (
+        <div className="mb-5 px-4 py-3 rounded-xl bg-rose-50 text-rose-500 text-sm">
+          {error}
+        </div>
+      )}
 
-        <h1 className="text-3xl font-bold text-center mb-2">
-          Créer un compte
-        </h1>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input
+          label="Nom complet"
+          name="name"
+          value={form.name}
+          onChange={handleChange}
+          placeholder="Votre nom"
+          required
+        />
 
-        <p className="text-gray-500 text-center mb-6">
-          Rejoignez FitHub Pro
-        </p>
+        <Input
+          label="Email"
+          type="email"
+          name="email"
+          value={form.email}
+          onChange={handleChange}
+          placeholder="nom@email.com"
+          required
+        />
 
-        {error && (
-          <div className="bg-red-100 text-red-600 p-3 rounded mb-4">
-            {error}
-          </div>
-        )}
+        <Input
+          label="Téléphone"
+          name="phone"
+          value={form.phone}
+          onChange={handleChange}
+          placeholder="Votre téléphone"
+        />
 
-        <form onSubmit={handleSubmit}>
-          <input
-            type="text"
-            name="name"
-            placeholder="Nom complet"
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-3"
-          />
+        <Input
+          label="Mot de passe"
+          type="password"
+          name="password"
+          value={form.password}
+          onChange={handleChange}
+          placeholder="••••••••"
+          required
+        />
 
-          <input
-            type="email"
-            name="email"
-            placeholder="Email"
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-3"
-          />
+        <Input
+          label="Confirmation"
+          type="password"
+          name="password_confirmation"
+          value={form.password_confirmation}
+          onChange={handleChange}
+          placeholder="••••••••"
+          required
+        />
 
-          <input
-            type="text"
-            name="phone"
-            placeholder="Téléphone"
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-3"
-          />
+        <Button
+          type="submit"
+          className="w-full py-3"
+        >
+          Créer mon compte
+        </Button>
+      </form>
 
-          <input
-            type="password"
-            name="password"
-            placeholder="Mot de passe"
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-3"
-          />
-
-          <input
-            type="password"
-            name="password_confirmation"
-            placeholder="Confirmer le mot de passe"
-            onChange={handleChange}
-            className="w-full border p-3 rounded-lg mb-4"
-          />
-
-          <button
-            type="submit"
-            className="w-full bg-gray-900 text-white p-3 rounded-lg"
-          >
-            S'inscrire
-          </button>
-        </form>
-
-        <p className="text-center mt-5 text-gray-500">
-          Déjà un compte ?{" "}
-          <Link to="/login" className="font-semibold text-gray-900">
-            Se connecter
-          </Link>
-        </p>
-
-      </div>
-    </div>
+      <p className="text-center text-sm text-slate-400 mt-7">
+        Vous avez déjà un compte ?{" "}
+        <Link
+          to="/login"
+          className="font-semibold text-pink-500"
+        >
+          Se connecter
+        </Link>
+      </p>
+    </AuthLayout>
   );
 }
 

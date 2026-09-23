@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import PageHeader from "../../components/ui/PageHeader";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Button from "../../components/ui/Button";
 
 function Progress() {
   const [members, setMembers] = useState([]);
@@ -91,118 +96,201 @@ function Progress() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Suivi de progression
-      </h1>
+  <div>
+    <PageHeader
+      title="Suivi de progression"
+      description="Enregistrez et consultez l'évolution de vos adhérents"
+    />
 
-      {message && <p className="mb-4">{message}</p>}
+    {message && (
+      <div className="mb-6 px-4 py-3 bg-pink-50 text-pink-600 rounded-xl text-sm">
+        {message}
+      </div>
+    )}
 
-      <form onSubmit={handleSubmit} className="mb-8">
-        <select
-          name="member_id"
-          value={form.member_id}
-          onChange={handleMemberChange}
-          className="border p-2 block mb-3"
-          required
-        >
-          <option value="">Choisir un adhérent</option>
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <Card>
+        <h2 className="font-bold text-slate-800">
+          Nouvelle mesure
+        </h2>
 
-          {members.map((member) => (
-            <option key={member.id} value={member.id}>
-              {member.name}
+        <p className="text-xs text-slate-400 mt-1 mb-6">
+          Ajoutez les nouvelles données physiques
+        </p>
+
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Select
+            label="Adhérent"
+            name="member_id"
+            value={form.member_id}
+            onChange={handleMemberChange}
+            required
+          >
+            <option value="">
+              Choisir un adhérent
             </option>
-          ))}
-        </select>
 
-        <input
-          type="number"
-          step="0.1"
-          name="weight"
-          value={form.weight}
-          onChange={handleChange}
-          placeholder="Poids (kg)"
-          className="border p-2 block mb-3"
-        />
+            {members.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.name}
+              </option>
+            ))}
+          </Select>
 
-        <input
-          type="number"
-          step="0.1"
-          name="height"
-          value={form.height}
-          onChange={handleChange}
-          placeholder="Taille (cm)"
-          className="border p-2 block mb-3"
-        />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Poids (kg)"
+              type="number"
+              step="0.1"
+              name="weight"
+              value={form.weight}
+              onChange={handleChange}
+            />
 
-        <input
-          type="number"
-          step="0.1"
-          name="body_fat_percentage"
-          value={form.body_fat_percentage}
-          onChange={handleChange}
-          placeholder="Masse grasse (%)"
-          className="border p-2 block mb-3"
-        />
+            <Input
+              label="Taille (cm)"
+              type="number"
+              step="0.1"
+              name="height"
+              value={form.height}
+              onChange={handleChange}
+            />
 
-        <input
-          type="number"
-          step="0.1"
-          name="muscle_mass"
-          value={form.muscle_mass}
-          onChange={handleChange}
-          placeholder="Masse musculaire (kg)"
-          className="border p-2 block mb-3"
-        />
+            <Input
+              label="Masse grasse (%)"
+              type="number"
+              step="0.1"
+              name="body_fat_percentage"
+              value={form.body_fat_percentage}
+              onChange={handleChange}
+            />
 
-        <textarea
-          name="notes"
-          value={form.notes}
-          onChange={handleChange}
-          placeholder="Notes"
-          className="border p-2 block mb-3"
-        />
-
-        <button className="bg-black text-white px-4 py-2">
-          Enregistrer
-        </button>
-      </form>
-
-      <h2 className="text-xl font-bold mb-4">
-        Historique
-      </h2>
-
-      {!form.member_id ? (
-        <p>Choisissez un adhérent.</p>
-      ) : history.length === 0 ? (
-        <p>Aucune progression enregistrée.</p>
-      ) : (
-        history.map((item) => (
-          <div key={item.id} className="border p-4 mb-3">
-            <p>
-              Date :{" "}
-              {new Date(item.recorded_at).toLocaleDateString()}
-            </p>
-
-            <p>Poids : {item.weight || "-"} kg</p>
-            <p>Taille : {item.height || "-"} cm</p>
-
-            <p>
-              Masse grasse :{" "}
-              {item.body_fat_percentage || "-"} %
-            </p>
-
-            <p>
-              Masse musculaire :{" "}
-              {item.muscle_mass || "-"} kg
-            </p>
-
-            {item.notes && <p>Notes : {item.notes}</p>}
+            <Input
+              label="Masse musculaire"
+              type="number"
+              step="0.1"
+              name="muscle_mass"
+              value={form.muscle_mass}
+              onChange={handleChange}
+            />
           </div>
-        ))
-      )}
+
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-2">
+              Notes
+            </label>
+
+            <textarea
+              name="notes"
+              value={form.notes}
+              onChange={handleChange}
+              rows="3"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
+            />
+          </div>
+
+          <Button type="submit" className="w-full">
+            Enregistrer
+          </Button>
+        </form>
+      </Card>
+
+      <div className="xl:col-span-2">
+        <Card className="p-0 overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-100">
+            <h2 className="font-bold text-slate-800">
+              Historique de progression
+            </h2>
+
+            <p className="text-xs text-slate-400 mt-1">
+              Évolution physique de l'adhérent
+            </p>
+          </div>
+
+          {history.length === 0 ? (
+            <div className="p-10 text-center text-sm text-slate-400">
+              Sélectionnez un adhérent pour consulter son historique.
+            </div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {history.map((record) => (
+                <div key={record.id} className="p-6">
+                  <div className="flex justify-between mb-5">
+                    <p className="font-semibold text-slate-700">
+                      Mesure
+                    </p>
+
+                    <span className="text-xs text-slate-400">
+                      {record.recorded_at}
+                    </span>
+                  </div>
+
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <Metric
+                      label="Poids"
+                      value={
+                        record.weight
+                          ? `${record.weight} kg`
+                          : "-"
+                      }
+                    />
+
+                    <Metric
+                      label="Taille"
+                      value={
+                        record.height
+                          ? `${record.height} cm`
+                          : "-"
+                      }
+                    />
+
+                    <Metric
+                      label="Masse grasse"
+                      value={
+                        record.body_fat_percentage
+                          ? `${record.body_fat_percentage}%`
+                          : "-"
+                      }
+                    />
+
+                    <Metric
+                      label="Masse musculaire"
+                      value={
+                        record.muscle_mass
+                          ? `${record.muscle_mass} kg`
+                          : "-"
+                      }
+                    />
+                  </div>
+
+                  {record.notes && (
+                    <p className="text-sm text-slate-400 mt-4">
+                      {record.notes}
+                    </p>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
+    </div>
+  </div>
+);
+
+function Metric({ label, value }) {
+  return (
+    <div className="bg-slate-50 rounded-xl p-4">
+      <p className="text-xs text-slate-400">
+        {label}
+      </p>
+
+      <p className="font-bold text-slate-700 mt-1">
+        {value}
+      </p>
     </div>
   );
+}
 }
 
 export default Progress;

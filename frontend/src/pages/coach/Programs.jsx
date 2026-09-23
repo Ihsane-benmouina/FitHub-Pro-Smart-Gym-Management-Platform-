@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import PageHeader from "../../components/ui/PageHeader";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Button from "../../components/ui/Button";
+import StatusBadge from "../../components/ui/StatusBadge";
 
 function Programs() {
   const [programs, setPrograms] = useState([]);
@@ -71,6 +77,18 @@ function Programs() {
     });
   };
 
+  const handleExerciseChange = (e) => {
+    const value =
+      e.target.type === "number" && e.target.value !== ""
+        ? Number(e.target.value)
+        : e.target.value;
+
+    setExerciseForm((prev) => ({
+      ...prev,
+      [e.target.name]: value,
+    }));
+  };
+
   // Créer un programme
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -90,7 +108,7 @@ function Programs() {
         end_date: "",
       });
 
-      loadPrograms();
+      await loadPrograms();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -127,7 +145,7 @@ function Programs() {
         rest_seconds: 60,
       });
 
-      loadPrograms();
+      await loadPrograms();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -136,281 +154,283 @@ function Programs() {
     }
   };
 
-  return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">
-        Programmes d'entraînement
-      </h1>
+ return (
+  <div>
+    <PageHeader
+      title="Programmes d'entraînement"
+      description="Créez des programmes personnalisés pour vos adhérents"
+    />
 
-      {message && (
-        <p className="mb-4">
-          {message}
+    {message && (
+      <div className="mb-6 px-4 py-3 rounded-xl bg-pink-50 text-pink-600 text-sm">
+        {message}
+      </div>
+    )}
+
+    <div className="grid grid-cols-1 xl:grid-cols-2 gap-6 mb-7">
+      {/* CREATE PROGRAM */}
+      <Card>
+        <h2 className="font-bold text-slate-800">
+          Nouveau programme
+        </h2>
+
+        <p className="text-xs text-slate-400 mt-1 mb-6">
+          Assignez un programme personnalisé à un adhérent
         </p>
-      )}
 
-      {/* Création d'un programme */}
-      <h2 className="text-xl font-bold mb-4">
-        Créer un programme
-      </h2>
-
-      <form onSubmit={handleSubmit} className="mb-8">
-        <select
-          name="member_id"
-          value={form.member_id}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        >
-          <option value="">Choisir un adhérent</option>
-
-          {members.map((member) => (
-            <option key={member.id} value={member.id}>
-              {member.name}
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Select
+            label="Adhérent"
+            name="member_id"
+            value={form.member_id}
+            onChange={handleChange}
+            required
+          >
+            <option value="">
+              Choisir un adhérent
             </option>
-          ))}
-        </select>
 
-        <input
-          type="text"
-          name="title"
-          placeholder="Titre du programme"
-          value={form.title}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
+            {members.map((member) => (
+              <option key={member.id} value={member.id}>
+                {member.name}
+              </option>
+            ))}
+          </Select>
 
-        <input
-          type="text"
-          name="goal"
-          placeholder="Objectif"
-          value={form.goal}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-        />
+          <Input
+            label="Titre du programme"
+            name="title"
+            value={form.title}
+            onChange={handleChange}
+            placeholder="Ex : Programme prise de masse"
+            required
+          />
 
-        <textarea
-          name="description"
-          placeholder="Description"
-          value={form.description}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-        />
+          <Input
+            label="Objectif"
+            name="goal"
+            value={form.goal}
+            onChange={handleChange}
+            placeholder="Ex : Prise de masse"
+          />
 
-        <input
-          type="date"
-          name="start_date"
-          value={form.start_date}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-        />
+          <div>
+            <label className="block text-xs font-medium text-slate-500 mb-2">
+              Description
+            </label>
 
-        <input
-          type="date"
-          name="end_date"
-          value={form.end_date}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-        />
+            <textarea
+              name="description"
+              value={form.description}
+              onChange={handleChange}
+              rows="3"
+              className="w-full px-4 py-3 border border-slate-200 rounded-xl text-sm outline-none focus:border-pink-400 focus:ring-2 focus:ring-pink-100"
+            />
+          </div>
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Créer le programme
-        </button>
-      </form>
+          <Button type="submit" className="w-full">
+            + Créer le programme
+          </Button>
+        </form>
+      </Card>
 
-      {/* Ajouter un exercice */}
-      <h2 className="text-xl font-bold mb-4">
-        Ajouter un exercice à un programme
-      </h2>
+      {/* ADD EXERCISE */}
+      <Card>
+        <h2 className="font-bold text-slate-800">
+          Ajouter un exercice
+        </h2>
 
-      <form onSubmit={addExercise} className="mb-8">
-        <select
-          value={exerciseForm.program_id}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              program_id: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-          required
-        >
-          <option value="">Choisir un programme</option>
+        <p className="text-xs text-slate-400 mt-1 mb-6">
+          Complétez un programme avec des exercices
+        </p>
 
-          {programs.map((program) => (
-            <option key={program.id} value={program.id}>
-              {program.title}
+        <form onSubmit={addExercise} className="space-y-4">
+          <Select
+            label="Programme"
+            name="program_id"
+            value={exerciseForm.program_id}
+            onChange={handleExerciseChange}
+            required
+          >
+            <option value="">
+              Choisir un programme
             </option>
-          ))}
-        </select>
 
-        <select
-          value={exerciseForm.exercise_id}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              exercise_id: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-          required
-        >
-          <option value="">Choisir un exercice</option>
+            {programs.map((program) => (
+              <option key={program.id} value={program.id}>
+                {program.title}
+              </option>
+            ))}
+          </Select>
 
-          {exercises.map((exercise) => (
-            <option key={exercise.id} value={exercise.id}>
-              {exercise.name}
+          <Select
+            label="Exercice"
+            name="exercise_id"
+            value={exerciseForm.exercise_id}
+            onChange={handleExerciseChange}
+            required
+          >
+            <option value="">
+              Choisir un exercice
             </option>
-          ))}
-        </select>
 
-        <input
-          type="number"
-          min="1"
-          placeholder="Séries"
-          value={exerciseForm.sets}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              sets: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-          required
-        />
+            {exercises.map((exercise) => (
+              <option key={exercise.id} value={exercise.id}>
+                {exercise.name}
+              </option>
+            ))}
+          </Select>
 
-        <input
-          type="number"
-          min="1"
-          placeholder="Répétitions"
-          value={exerciseForm.reps}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              reps: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-          required
-        />
+          <div className="grid grid-cols-2 gap-4">
+            <Input
+              label="Séries"
+              type="number"
+              name="sets"
+              value={exerciseForm.sets}
+              onChange={handleExerciseChange}
+            />
 
-        <input
-          type="number"
-          min="0"
-          step="0.5"
-          placeholder="Poids (kg)"
-          value={exerciseForm.weight}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              weight: e.target.value,
-            })
-          }
-          className="border p-2 block mb-2"
-        />
+            <Input
+              label="Répétitions"
+              type="number"
+              name="reps"
+              value={exerciseForm.reps}
+              onChange={handleExerciseChange}
+            />
 
-        <input
-          type="number"
-          min="0"
-          placeholder="Repos (secondes)"
-          value={exerciseForm.rest_seconds}
-          onChange={(e) =>
-            setExerciseForm({
-              ...exerciseForm,
-              rest_seconds: e.target.value,
-            })
-          }
-          className="border p-2 block mb-3"
-        />
+            <Input
+              label="Poids (kg)"
+              type="number"
+              step="0.1"
+              name="weight"
+              value={exerciseForm.weight}
+              onChange={handleExerciseChange}
+            />
 
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Ajouter l'exercice
-        </button>
-      </form>
+            <Input
+              label="Repos (sec)"
+              type="number"
+              name="rest_seconds"
+              value={exerciseForm.rest_seconds}
+              onChange={handleExerciseChange}
+            />
+          </div>
 
-      {/* Liste des programmes */}
-      <h2 className="text-xl font-bold mb-4">
+          <Button type="submit" className="w-full">
+            Ajouter au programme
+          </Button>
+        </form>
+      </Card>
+    </div>
+
+    {/* PROGRAM LIST */}
+    <div>
+      <h2 className="text-lg font-bold text-slate-800 mb-5">
         Mes programmes
       </h2>
 
-      {programs.length === 0 ? (
-        <p>Aucun programme.</p>
-      ) : (
-        programs.map((program) => (
-          <div
-            key={program.id}
-            className="border p-4 mb-3"
-          >
-            <h3 className="font-bold">
-              {program.title}
-            </h3>
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        {programs.map((program) => (
+          <Card key={program.id}>
+            <div className="flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs text-pink-500 font-medium">
+                  PROGRAMME
+                </p>
 
-            <p>
-              Adhérent : {program.member?.name}
-            </p>
+                <h3 className="text-lg font-bold text-slate-800 mt-1">
+                  {program.title}
+                </h3>
 
-            <p>
-              Objectif : {program.goal || "-"}
-            </p>
+                <p className="text-sm text-slate-400 mt-1">
+                  {program.member?.name || "Adhérent"}
+                </p>
+              </div>
 
-            <p>
-              Statut : {program.status}
-            </p>
+              <StatusBadge status={program.status} />
+            </div>
+
+            {program.goal && (
+              <div className="mt-5 bg-violet-50 rounded-xl p-4">
+                <p className="text-xs text-violet-400">
+                  Objectif
+                </p>
+
+                <p className="text-sm font-semibold text-violet-700 mt-1">
+                  {program.goal}
+                </p>
+              </div>
+            )}
 
             {program.description && (
-              <p>
-                Description : {program.description}
+              <p className="text-sm text-slate-400 mt-4">
+                {program.description}
               </p>
             )}
 
-            {/* Exercices du programme */}
-            {program.exercises?.length > 0 && (
-              <div className="mt-4">
-                <strong>Exercices :</strong>
+            <div className="mt-5 pt-5 border-t border-slate-100">
+              <p className="text-xs font-semibold text-slate-500 uppercase mb-3">
+                Exercices
+              </p>
 
-                {program.exercises.map((exercise) => (
-                  <div
-                    key={exercise.id}
-                    className="border-l pl-3 mt-3"
-                  >
-                    <p className="font-semibold">
-                      {exercise.name}
-                    </p>
+              {!program.exercises ||
+              program.exercises.length === 0 ? (
+                <p className="text-sm text-slate-400">
+                  Aucun exercice ajouté.
+                </p>
+              ) : (
+                <div className="space-y-3">
+                  {program.exercises.map((exercise) => (
+                    <div
+                      key={exercise.id}
+                      className="bg-slate-50 rounded-xl p-4"
+                    >
+                      <div className="flex justify-between gap-3">
+                        <p className="text-sm font-semibold text-slate-700">
+                          {exercise.name}
+                        </p>
 
-                    <p>
-                      Séries : {exercise.pivot?.sets || "-"}
-                    </p>
+                        <span className="text-xs text-slate-400">
+                          {exercise.muscle_group}
+                        </span>
+                      </div>
 
-                    <p>
-                      Répétitions :{" "}
-                      {exercise.pivot?.reps || "-"}
-                    </p>
+                      <div className="flex flex-wrap gap-4 mt-3 text-xs text-slate-500">
+                        {exercise.pivot?.sets && (
+                          <span>
+                            {exercise.pivot.sets} séries
+                          </span>
+                        )}
 
-                    {exercise.pivot?.weight && (
-                      <p>
-                        Poids : {exercise.pivot.weight} kg
-                      </p>
-                    )}
+                        {exercise.pivot?.reps && (
+                          <span>
+                            {exercise.pivot.reps} reps
+                          </span>
+                        )}
 
-                    <p>
-                      Repos :{" "}
-                      {exercise.pivot?.rest_seconds || 0} sec
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        ))
-      )}
+                        {exercise.pivot?.weight && (
+                          <span>
+                            {exercise.pivot.weight} kg
+                          </span>
+                        )}
+
+                        {exercise.pivot?.rest_seconds && (
+                          <span>
+                            Repos {exercise.pivot.rest_seconds}s
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </Card>
+        ))}
+      </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Programs;

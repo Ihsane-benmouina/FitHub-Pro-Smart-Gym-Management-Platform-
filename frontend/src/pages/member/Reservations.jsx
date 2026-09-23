@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
 import api from "../../api/axios";
+import PageHeader from "../../components/ui/PageHeader";
+import Card from "../../components/ui/Card";
+import Input from "../../components/ui/Input";
+import Select from "../../components/ui/Select";
+import Button from "../../components/ui/Button";
+import StatusBadge from "../../components/ui/StatusBadge";
 
 function Reservations() {
   const [reservations, setReservations] = useState([]);
@@ -82,117 +88,138 @@ function Reservations() {
   };
 
   return (
-    <div className="p-6">
+  <div>
+    <PageHeader
+      title="Mes réservations"
+      description="Réservez une séance avec l'un de nos coachs"
+    />
 
-      <h1 className="text-2xl font-bold mb-6">
-        Mes réservations
-      </h1>
+    {message && (
+      <div className="mb-6 px-4 py-3 bg-pink-50 text-pink-600 rounded-xl text-sm">
+        {message}
+      </div>
+    )}
 
-      {message && <p className="mb-4">{message}</p>}
+    <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+      <Card>
+        <h2 className="font-bold text-slate-800">
+          Nouvelle réservation
+        </h2>
 
-      <form onSubmit={handleSubmit} className="mb-8">
-        <select
-          name="coach_id"
-          value={form.coach_id}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        >
-          <option value="">Choisir un coach</option>
+        <p className="text-xs text-slate-400 mt-1 mb-6">
+          Planifiez votre prochaine séance
+        </p>
 
-          {coaches.map((coach) => (
-            <option key={coach.id} value={coach.id}>
-              {coach.name}
-            </option>
-          ))}
-        </select>
-
-      <select
-  name="activity_id"
-  value={form.activity_id}
-  onChange={handleChange}
-  className="border p-2 block mb-3"
-  required
->
-  <option value="">Choisir une activité</option>
-
-  {activities.map((activity) => (
-    <option key={activity.id} value={activity.id}>
-      {activity.name}
-    </option>
-  ))}
-</select>
-
-        <input
-          type="date"
-          name="session_date"
-          value={form.session_date}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
-
-        <input
-          type="time"
-          name="start_time"
-          value={form.start_time}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
-
-        <input
-          type="time"
-          name="end_time"
-          value={form.end_time}
-          onChange={handleChange}
-          className="border p-2 block mb-3"
-          required
-        />
-
-        <button
-          type="submit"
-          className="bg-black text-white px-4 py-2"
-        >
-          Réserver
-        </button>
-
-      </form>
-
-      <h2 className="text-xl font-bold mb-4">
-        Historique
-      </h2>
-
-      {reservations.length === 0 ? (
-        <p>Aucune réservation.</p>
-      ) : (
-        reservations.map((reservation) => (
-          <div
-            key={reservation.id}
-            className="border p-4 mb-3"
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <Select
+            label="Activité"
+            name="activity_id"
+            value={form.activity_id}
+            onChange={handleChange}
+            required
           >
-            <p>
-              Coach : {reservation.coach?.name}
+            <option value="">Choisir une activité</option>
+
+            {activities.map((activity) => (
+              <option key={activity.id} value={activity.id}>
+                {activity.name}
+              </option>
+            ))}
+          </Select>
+
+          <Select
+            label="Coach"
+            name="coach_id"
+            value={form.coach_id}
+            onChange={handleChange}
+            required
+          >
+            <option value="">Choisir un coach</option>
+
+            {coaches.map((coach) => (
+              <option key={coach.id} value={coach.id}>
+                {coach.name}
+              </option>
+            ))}
+          </Select>
+
+          <Input
+            label="Date"
+            type="date"
+            name="session_date"
+            value={form.session_date}
+            onChange={handleChange}
+            required
+          />
+
+          <Input
+            label="Heure"
+            type="time"
+            name="start_time"
+            value={form.start_time}
+            onChange={handleChange}
+            required
+          />
+
+          <Button type="submit" className="w-full">
+            Réserver la séance
+          </Button>
+        </form>
+      </Card>
+
+      <div className="xl:col-span-2">
+        <Card className="p-0 overflow-hidden">
+          <div className="px-6 py-5 border-b border-slate-100">
+            <h2 className="font-bold text-slate-800">
+              Historique des réservations
+            </h2>
+
+            <p className="text-xs text-slate-400 mt-1">
+              {reservations.length} réservation(s)
             </p>
-
-            <p>
-              Activité : {reservation.activity?.name}
-            </p>
-
-            <p>Date : {reservation.session_date}</p>
-
-            <p>
-              Heure : {reservation.start_time} -{" "}
-              {reservation.end_time}
-            </p>
-
-            <p>Statut : {reservation.status}</p>
           </div>
-        ))
-      )}
 
+          {reservations.length === 0 ? (
+            <div className="p-10 text-center text-sm text-slate-400">
+              Aucune réservation.
+            </div>
+          ) : (
+            <div className="divide-y divide-slate-100">
+              {reservations.map((reservation) => (
+                <div key={reservation.id} className="p-5">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                    <div className="flex items-center gap-4">
+                      <div className="w-11 h-11 rounded-xl bg-violet-50 text-violet-500 flex items-center justify-center">
+                        ◷
+                      </div>
+
+                      <div>
+                        <h3 className="text-sm font-semibold text-slate-700">
+                          {reservation.activity?.name || "Séance"}
+                        </h3>
+
+                        <p className="text-xs text-slate-400 mt-1">
+                          Coach {reservation.coach?.name || "-"}
+                        </p>
+
+                        <p className="text-xs text-slate-400 mt-1">
+                          {reservation.session_date} à{" "}
+                          {reservation.start_time}
+                        </p>
+                      </div>
+                    </div>
+
+                    <StatusBadge status={reservation.status} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </Card>
+      </div>
     </div>
-  );
+  </div>
+);
 }
 
 export default Reservations;

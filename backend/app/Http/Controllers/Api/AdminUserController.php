@@ -15,6 +15,29 @@ class AdminUserController extends Controller
         );
     }
 
+    public function store(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|string|min:8|confirmed',
+            'role' => 'required|in:admin,coach,receptionniste',
+        ]);
+
+        $user = User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'role' => $request->role,
+            'is_active' => true,
+        ]);
+
+        return response()->json([
+            'message' => 'Compte créé avec succès',
+            'user' => $user,
+        ], 201);
+    }
+
     public function updateRole(Request $request, $id)
     {
         $request->validate([
