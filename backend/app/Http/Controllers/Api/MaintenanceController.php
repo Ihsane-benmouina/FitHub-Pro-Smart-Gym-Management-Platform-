@@ -25,6 +25,7 @@ class MaintenanceController extends Controller
             'description' => 'required|string',
             'type' => 'required|in:preventive,corrective',
             'scheduled_date' => 'nullable|date',
+            'cost' => 'nullable|numeric|min:0',
         ]);
 
         $maintenance = Maintenance::create([
@@ -34,6 +35,7 @@ class MaintenanceController extends Controller
             'type' => $request->type,
             'status' => 'pending',
             'scheduled_date' => $request->scheduled_date,
+            'cost' => $request->cost,
         ]);
 
         Equipment::where('id', $request->equipment_id)

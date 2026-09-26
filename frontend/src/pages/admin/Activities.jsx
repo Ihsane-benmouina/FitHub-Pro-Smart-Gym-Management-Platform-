@@ -69,7 +69,7 @@ function Activities() {
         capacity: "",
       });
 
-      loadActivities();
+      await loadActivities();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -97,7 +97,7 @@ function Activities() {
         coach_id: "",
       });
 
-      loadActivities();
+      await loadActivities();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -114,7 +114,7 @@ function Activities() {
 
       setMessage("Coach retiré avec succès");
 
-      loadActivities();
+      await loadActivities();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -129,7 +129,7 @@ function Activities() {
 
       setMessage("Activité supprimée avec succès");
 
-      loadActivities();
+      await loadActivities();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||

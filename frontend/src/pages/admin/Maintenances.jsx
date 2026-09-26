@@ -17,6 +17,7 @@ function Maintenances() {
     description: "",
     type: "preventive",
     scheduled_date: "",
+    cost: "",
   });
 
  useEffect(() => {
@@ -53,9 +54,10 @@ function Maintenances() {
         description: "",
         type: "preventive",
         scheduled_date: "",
+        cost: "",
       });
 
-      loadMaintenances();
+      await loadMaintenances();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -71,7 +73,7 @@ function Maintenances() {
       });
 
       setMessage("Maintenance terminée avec succès");
-      loadMaintenances();
+      await loadMaintenances();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||

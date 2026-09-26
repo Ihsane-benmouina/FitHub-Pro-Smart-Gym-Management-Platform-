@@ -14,6 +14,7 @@ class PaymentController extends Controller
             'subscription_id' => 'required|exists:subscriptions,id',
             'amount' => 'required|numeric|min:0',
             'payment_method' => 'required|in:cash,card,transfer',
+            'reference' => 'nullable|string|max:255',
         ]);
 
         $payment = Payment::create([
@@ -21,6 +22,7 @@ class PaymentController extends Controller
             'received_by' => $request->user()->id,
             'amount' => $request->amount,
             'payment_method' => $request->payment_method,
+            'reference' => $request->reference,
             'status' => 'paid',
             'paid_at' => now(),
         ]);
@@ -33,7 +35,8 @@ class PaymentController extends Controller
 
     public function myPayments(Request $request)
     {
-        $payments = Payment::whereHas('subscription', function ($query) use ($request) {
+        $payments = Payment::with('subscription.plan')
+        ->whereHas('subscription', function ($query) use ($request) {
             $query->where('member_id', $request->user()->id);
         })
         ->latest()

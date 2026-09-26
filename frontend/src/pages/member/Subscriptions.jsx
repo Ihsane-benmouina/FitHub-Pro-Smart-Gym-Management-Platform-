@@ -40,7 +40,7 @@ function Subscriptions() {
       });
 
       setMessage("Abonnement créé avec succès");
-      loadSubscription();
+      await loadSubscription();
     } catch (error) {
       setMessage(
         error.response?.data?.message || "Erreur lors de l'abonnement"
@@ -53,7 +53,7 @@ function Subscriptions() {
       await api.put(`/subscriptions/${subscription.id}/renew`);
 
       setMessage("Abonnement renouvelé avec succès");
-      loadSubscription();
+      await loadSubscription();
     } catch (error) {
       setMessage(
         error.response?.data?.message || "Erreur lors du renouvellement"

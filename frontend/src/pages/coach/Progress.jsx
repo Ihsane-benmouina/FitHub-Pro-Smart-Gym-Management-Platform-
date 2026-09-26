@@ -77,7 +77,7 @@ function Progress() {
 
       setMessage("Progression enregistrée avec succès");
 
-      loadHistory(form.member_id);
+      await loadHistory(form.member_id);
 
       setForm({
         ...form,
