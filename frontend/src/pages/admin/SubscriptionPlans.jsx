@@ -51,7 +51,7 @@ function SubscriptionPlans() {
         duration_days: "",
       });
 
-      loadPlans();
+      await loadPlans();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||

@@ -116,28 +116,28 @@ function Programs() {
                         </div>
 
                         <div className="flex flex-wrap gap-3 mt-3">
-                          {exercise.pivot?.sets && (
+                          {exercise.pivot?.sets !== null && exercise.pivot?.sets !== undefined && (
                             <ExerciseValue
                               label="Séries"
                               value={exercise.pivot.sets}
                             />
                           )}
 
-                          {exercise.pivot?.reps && (
+                          {exercise.pivot?.reps !== null && exercise.pivot?.reps !== undefined && (
                             <ExerciseValue
                               label="Rép."
                               value={exercise.pivot.reps}
                             />
                           )}
 
-                          {exercise.pivot?.weight && (
+                          {exercise.pivot?.weight !== null && exercise.pivot?.weight !== undefined && (
                             <ExerciseValue
                               label="Poids"
                               value={`${exercise.pivot.weight} kg`}
                             />
                           )}
 
-                          {exercise.pivot?.rest_seconds && (
+                          {exercise.pivot?.rest_seconds !== null && exercise.pivot?.rest_seconds !== undefined && (
                             <ExerciseValue
                               label="Repos"
                               value={`${exercise.pivot.rest_seconds}s`}

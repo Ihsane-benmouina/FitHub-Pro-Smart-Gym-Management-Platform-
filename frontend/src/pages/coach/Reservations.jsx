@@ -24,7 +24,7 @@ function Reservations() {
   const acceptReservation = async (id) => {
     try {
       await api.put(`/reservations/${id}/accept`);
-      loadReservations();
+      await loadReservations();
     } catch (error) {
       console.error(error);
     }
@@ -33,7 +33,7 @@ function Reservations() {
   const rejectReservation = async (id) => {
     try {
       await api.put(`/reservations/${id}/reject`);
-      loadReservations();
+      await loadReservations();
     } catch (error) {
       console.error(error);
     }

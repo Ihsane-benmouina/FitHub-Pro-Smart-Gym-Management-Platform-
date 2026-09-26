@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Attendance;
+use App\Models\Subscription;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -21,6 +22,17 @@ class AttendanceController extends Controller
         if ($member->role !== 'adherent') {
             return response()->json([
                 'message' => 'Cet utilisateur n\'est pas un adhérent'
+            ], 400);
+        }
+
+        $hasActiveSubscription = Subscription::where('member_id', $member->id)
+            ->where('status', 'active')
+            ->whereDate('end_date', '>=', today())
+            ->exists();
+
+        if (!$hasActiveSubscription) {
+            return response()->json([
+                'message' => 'Cet adhérent n\'a pas d\'abonnement actif'
             ], 400);
         }
 

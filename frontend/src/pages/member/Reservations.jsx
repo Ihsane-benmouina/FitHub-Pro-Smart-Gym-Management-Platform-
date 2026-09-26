@@ -60,7 +60,7 @@ function Reservations() {
         end_time: "",
       });
 
-      loadReservations();
+      await loadReservations();
     } catch (error) {
       setMessage(
         error.response?.data?.message ||
@@ -157,6 +157,15 @@ function Reservations() {
             type="time"
             name="start_time"
             value={form.start_time}
+            onChange={handleChange}
+            required
+          />
+
+          <Input
+            label="Heure de fin"
+            type="time"
+            name="end_time"
+            value={form.end_time}
             onChange={handleChange}
             required
           />
