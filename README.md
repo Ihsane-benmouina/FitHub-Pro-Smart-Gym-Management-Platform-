@@ -50,47 +50,58 @@ FitHub Pro permet notamment de :
 ### Page de connexion
 
 ```{=html}
-![alt text](image-2.png)
+<img width="1366" height="603" alt="image" src="https://github.com/user-attachments/assets/b8c246b8-2402-4acb-bab4-28ae44ec746e" />
+
 ```
 ### Dashboard Administrateur
 
 ```{=html}
-![alt text](image-3.png)
+<img width="1358" height="610" alt="image" src="https://github.com/user-attachments/assets/ad22fcc2-e7c6-4647-b957-5d7ee6cc70a4" />
+
 ```
 ### Gestion des utilisateurs
 
 ```{=html}
-![alt text](image-4.png)
+<img width="1336" height="612" alt="image" src="https://github.com/user-attachments/assets/a19c62ad-ac3e-4f08-8323-a208cff49cfc" />
+
 ```
 ### Dashboard Coach
 
 ```{=html}
-![alt text](image-7.png)
+<img width="1350" height="607" alt="image" src="https://github.com/user-attachments/assets/cb6d6327-0e6c-4436-9ffa-db15abfa68b0" />
+
 ```
 ### Programmes d'entraînement
 
 ```{=html}
-![alt text](image-8.png)
+<img width="1351" height="612" alt="image" src="https://github.com/user-attachments/assets/ae5ede46-1ce8-4a22-9996-42205b379a03" />
+
+
 ```
 ### Dashboard Réceptionniste
 
 ```{=html}
-![alt text](image-5.png)
+<img width="1365" height="596" alt="image" src="https://github.com/user-attachments/assets/db8b2f9c-87b1-44d4-91ec-5adb828f3a7a" />
+
 ```
 ### Gestion des présences
 
 ```{=html}
-![alt text](image-6.png)
+<img width="1344" height="609" alt="image" src="https://github.com/user-attachments/assets/66ac7ef5-5d64-43e3-bd1c-1721229cdc38" />
+
 ```
 ### Dashboard Adhérent
 
 ```{=html}
-![alt text](image.png)
+<img width="1357" height="604" alt="image" src="https://github.com/user-attachments/assets/4d2d6598-5c08-4eb9-8906-2c535f213d29" />
+
+
 ```
 ### QR Code Adhérent
 
 ```{=html}
-![alt text](image-1.png)
+<img width="1345" height="608" alt="image" src="https://github.com/user-attachments/assets/37cdebe4-b27f-4abf-9ae9-6f65eef7ef88" />
+
 ```
 
 ------------------------------------------------------------------------
@@ -358,17 +369,21 @@ les séries, répétitions, poids et temps de repos.
 ## Diagramme de cas d'utilisation
 
 ```{=html}
-c:\Users\user\Downloads\ChatGPT Image 26 sept. 2026, 14_03_11 (2).png
+<img width="1536" height="1024" alt="ChatGPT Image 26 sept  2026, 14_03_11 (2)" src="https://github.com/user-attachments/assets/afbe2bc2-d4ea-4997-9e8d-513239adc0fa" />
+
 ```
 ## Diagramme de classes
 
 ```{=html}
-c:\Users\user\Downloads\ChatGPT Image 26 sept. 2026, 14_07_20.png
+<img width="1536" height="1024" alt="ChatGPT Image 26 sept  2026, 14_07_20" src="https://github.com/user-attachments/assets/c2576e29-4730-4e29-80c5-d80f440c6f4b" />
+
 ```
 ## ERD --- Entity Relationship Diagram
 
 ```{=html}
-c:\Users\user\Downloads\ChatGPT Image 27 sept. 2026, 13_07_58.png
+<img width="1536" height="1024" alt="ChatGPT Image 27 sept  2026, 13_07_58" src="https://github.com/user-attachments/assets/efe9ad3f-9bf7-49b4-b45b-4e326da8a554" />
+
+
 ```
 ------------------------------------------------------------------------
 
